@@ -97,7 +97,7 @@ li {
 body {
     /*darker blue: #124876
       lighter blue: #1665aa*/
-  background: #76b852; /* fallback for old browsers */
+  background: #1665aa; /* fallback for old browsers */
   background: -webkit-linear-gradient(right, #124876, #1665aa);
   background: -moz-linear-gradient(right, #124876, #1665aa);
   background: -o-linear-gradient(right, #124876, #1665aa);
