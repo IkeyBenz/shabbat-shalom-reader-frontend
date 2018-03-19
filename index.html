@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <link rel="stylesheet" href="styles.css">
+        <script src="https://www.gstatic.com/firebasejs/4.11.0/firebase.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <script src="app.js" charset="utf-8"></script>
+        <title>Update Subscriptions</title>
+    </head>
+    <body>
+        <div class="login-page">
+            <div class="form">
+                <form class="register-form">
+                    <input type="text" placeholder="email address" id="email"/>
+                    <input type="text" placeholder="zip code" id="zipcode">
+                            <span><input type="checkbox" id="sub-1"/> Rabbi 1</span>
+                            <input type="checkbox" id="sub-2"/>
+                            <label for="sub-2">Rabbi 2</label>
+                            <input type="checkbox" id="sub-3"/>
+                            <label for="sub-3">Rabbi 3</label>
+                            <input type="checkbox" id="sub-4"/>
+                            <label for="sub-4">Rabbi 4</label>
+
+                    <button onclick="pushChanges()" id="subscribeButton">Subscribe</button>
+                    <p class="message">Already subscribed? <a href="#" onclick="toggleForm();">Edit subscriptions</a></p>
+                </form>
+                <form class="login-form">
+                    <input type="text" placeholder="email address" id="editemail"/>
+                    <button onclick="editSubscriptions()">Edit Subscriptions</button>
+                    <p class="message">Not subscribed? <a href="#" onclick="toggleForm();">Subscribe now</a></p>
+                </form>
+            </div>
+        </div>
+    </body>
+</html>
