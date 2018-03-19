@@ -18,47 +18,37 @@ function requiredFieldsAreFilledOut() {
     if (document.getElementById('email').value == "") {return false}
     if (document.getElementById('zipcode').value == "") {return false}
     var atLeastOnecheckboxIsSelected = false;
-    for (var i = 1; i < 4; i++) {
+    for (var i = 1; i <= 4; i++) {
         if (document.getElementById(`sub-${i}`).checked == true) {
             atLeastOnecheckboxIsSelected = true;
         }
     }
     return atLeastOnecheckboxIsSelected
 }
-// function subscribe() {
-//     if (requiredFieldsAreFilledOut() && document.getElementById('zipcode').value != "") {
-//         const emailAddress = document.getElementById('email').value;
-//         const zip = document.getElementById('zipcode').value;
-//         database.ref("Subscribers").orderByChild("Email").equalTo(emailAddress).once("value",snapshot => {
-//             const emailExists = snapshot.val();
-//             if (emailExists) {
-//                 alert("The email address entered is already registered for subscriptions.");
-//             } else {
-//                 pushChanges();
-//            }
-//        });
-//     }
-// }
 function editSubscriptions() {
     const emailAddress = document.getElementById('editemail').value;
-    database.ref("Subscribers").orderByChild("Email").equalTo(emailAddress).once("value",snapshot => {
-        const data = snapshot.val();
-        if (data) {
-            document.getElementById('email').value = emailAddress;
-            const zipcode = data[Object.keys(data)].ZipCode;
-            const subscriptions = data[Object.keys(data)].Subscriptions;
-            const subKeys = Object.keys(subscriptions);
-            for (var i = 0; i < subKeys.length; i++) {
-                document.getElementById(`sub-${i+1}`).checked = subscriptions[subKeys[i]];
-            }
-            document.getElementById('zipcode').value = zipcode;
-            document.getElementById('subscribeButton').innerHTML = "Confirm Changes";
-            toggleForm();
+    if (emailAddress == "") {
+        alert("Email address field cannot be empty.");
+    } else {
+        database.ref("Subscribers").orderByChild("Email").equalTo(emailAddress).once("value",snapshot => {
+            const data = snapshot.val();
+            if (data) {
+                document.getElementById('email').value = emailAddress;
+                const zipcode = data[Object.keys(data)].ZipCode;
+                const subscriptions = data[Object.keys(data)].Subscriptions;
+                const subKeys = Object.keys(subscriptions);
+                for (var i = 0; i < subKeys.length; i++) {
+                    document.getElementById(`sub-${i+1}`).checked = subscriptions[subKeys[i]];
+                }
+                document.getElementById('zipcode').value = zipcode;
+                document.getElementById('subscribeButton').innerHTML = "Confirm Changes";
+                toggleForm();
 
-        } else {
-            alert('The email address entered is not registered for subscriptions.\nPlease register and then choose subscriptions.')
-        }
-    });
+            } else {
+                alert('The email address entered is not registered for subscriptions.\nPlease register and then choose subscriptions.')
+            }
+        });
+    }
 }
 function pushChanges() {
     if (requiredFieldsAreFilledOut()) {
