@@ -9,19 +9,18 @@
         <title>Update Subscriptions</title>
     </head>
     <body>
+        <div class="Header">
+            <img src="../Images/SCALogo.png" alt="">
+        </div>
         <div class="login-page">
             <div class="form">
                 <form class="register-form">
                     <input type="text" placeholder="email address" id="email"/>
                     <input type="text" placeholder="zip code" id="zipcode">
-                            <span><input type="checkbox" id="sub-1"/> Rabbi 1</span>
-                            <input type="checkbox" id="sub-2"/>
-                            <label for="sub-2">Rabbi 2</label>
-                            <input type="checkbox" id="sub-3"/>
-                            <label for="sub-3">Rabbi 3</label>
-                            <input type="checkbox" id="sub-4"/>
-                            <label for="sub-4">Rabbi 4</label>
+                    <h4 style="width: 100%; text-align: center;">Subscription Preferences:</h4>
+                    <div id="subscriptionsView">
 
+                    </div>
                     <button onclick="pushChanges()" id="subscribeButton">Subscribe</button>
                     <p class="message">Already subscribed? <a href="#" onclick="toggleForm();">Edit subscriptions</a></p>
                 </form>

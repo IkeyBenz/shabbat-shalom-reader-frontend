@@ -1,0 +1,141 @@
+:root {
+    --StatsWidth: 0px;
+    --RightSideWidth: calc(100vw - var(--StatsWidth));
+    --HeaderHeight: 100px;
+    --ThemeColor: #0B4877;
+}
+body {
+    margin: 0 0;
+    height: 100vh;
+    font-family: sans-serif;
+}
+.login-container {
+    position: fixed;
+    left: calc(50vw - 150px);
+    top: 200px;
+    z-index: 5;
+    display: block;
+}
+#Overlay {
+    background-color: var(--ThemeColor);
+    z-index: 4;
+    position: fixed;
+    top: 100px;
+    width: 100vw;
+    height: 100vh;
+    display: block;
+}
+.Header {
+    width: var(--RightSideWidth);
+    height: var(--HeaderHeight);
+    position: fixed;
+    top: 0px;
+    left: var(--StatsWidth);
+    background-color: var(--ThemeColor);
+    z-index: 2;
+    text-align: center;
+    animation: ease;
+    animation-duration: 0.5s;
+}
+.logo {
+    height: 80%;
+    margin-top: 15px;
+    width: auto;
+    z-index: 5;
+}
+.Stats {
+    width: var(--StatsWidth);
+    height: 100vh;
+    position: fixed;
+    left: 0px;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 3;
+    animation: ease;
+    animation-duration: 0.5s;
+    display: none;
+    overflow-y: scroll;
+}
+
+.Stats h1 {
+    width: 100%;
+    height: 50px;
+    text-align: center;
+    color: white;
+    text-decoration: underline;
+}
+.AddRemoveButtons {
+    float: left;
+}
+
+#FileDroperContainer {
+    position: fixed;
+    left: var(--StatsWidth);
+    top: var(--HeaderHeight);
+    width: var(--RightSideWidth);
+    height: calc(100vh - var(--HeaderHeight));
+    overflow-y: scroll;
+}
+.left {
+    left: 20px;
+}
+.right {
+    right: 20px;
+}
+.icon {
+    height: 40px;
+    width: auto;
+    position: absolute;
+    top: 30px;
+}
+.PrevImgContainer {
+    width: calc(50% - 2px);
+    height: calc(calc(var(--RightSideWidth) / 2) - 2px);
+    border: solid 1px black;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    float: left;
+}
+.TextContainer {
+    width: 80%;
+    margin: 0 auto;
+    color: white;
+}
+.Center {
+    text-align: center;
+}
+.TopGradient {
+    padding: 10px 0px 20px 5px;
+    width: 100%;
+    background: linear-gradient(white, rgba(255, 255, 255, 0.2));
+}
+p {
+    margin-top: 2px;
+    margin-bottom: 2px;
+}
+h2 {
+    margin-top: 0px;
+    margin-bottom: 5px;
+    color: black;
+}
+#NewSubscriptionPopup {
+    position: fixed;
+    border-radius: 10px;
+    height: 200px;
+    width: 500px;
+    top: 200px;
+    left: calc(50vw - 250px);
+    background-color: var(--ThemeColor);
+}
+#NewSubscriptionPopup input {
+    width: 80%;
+    height: 20%;
+    font-size: 24px;
+    margin-left: 10%;
+    margin-top: 20px;
+}
+#NewSubscriptionPopup button {
+    margin-top: 10px;
+    padding: 8px 5px 8px 5px;
+    margin-left: 42%;
+}

@@ -1,5 +1,14 @@
 @import url(https://fonts.googleapis.com/css?family=Roboto:300);
 
+.Header {
+    width: 100vw;
+    text-align: center;
+}
+.Header img {
+    height: 80px;
+    width: auto;
+    margin-top: 20px;
+}
 .login-page {
   width: 460px;
   padding: 8% 0 0;
@@ -39,6 +48,12 @@
   -webkit-transition: all 0.3 ease;
   transition: all 0.3 ease;
   cursor: pointer;
+}
+input[type="checkbox"] {
+    width: 25px;
+}
+.register-form {
+    text-align: left;
 }
 .form button:hover,.form button:active,.form button:focus {
   background: #124876;
@@ -96,7 +111,7 @@ li {
 }
 body {
     /*darker blue: #124876
-      lighter blue: #1665aa*/
+      lighter blue: #1665aa */
   background: #1665aa; /* fallback for old browsers */
   background: -webkit-linear-gradient(right, #124876, #1665aa);
   background: -moz-linear-gradient(right, #124876, #1665aa);

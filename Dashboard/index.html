@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" style="--StatsWidth: 0px;">
+    <head>
+        <meta charset="utf-8">
+        <title>SCA Emails Dashboard</title>
+        <link rel="stylesheet" href="styles.css">
+        <link rel="stylesheet" href="loginStyles.css">
+        <script src="https://www.gstatic.com/firebasejs/4.11.0/firebase.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    </head>
+    <body>
+        <div id="Overlay"></div>
+        <div class="login-container" id="LoginView">
+        	<div class="login">
+        		<div class="login-screen">
+        			<div class="app-title">
+        				<h1>Login</h1>
+        			</div>
+
+        			<div class="login-form">
+        				<div class="control-group">
+        				<input type="text" class="login-field" value="" placeholder="email" id="login-email">
+        				<label class="login-field-icon fui-user" for="login-name"></label>
+        				</div>
+
+        				<div class="control-group">
+        				<input type="password" class="login-field" value="" placeholder="password" id="login-pass">
+        				<label class="login-field-icon fui-lock" for="login-pass"></label>
+        				</div>
+
+        				<a class="btn btn-primary btn-large btn-block" href="#" onclick="login();">login</a>
+        			</div>
+        		</div>
+        	</div>
+        </div>
+        <div class="Stats" id="StatsBar">
+            <h1>Statistics</h1>
+            <div class="TextContainer" id="StatsContainer">
+
+            </div>
+            <div class="TextContainer">
+                <button class="AddRemoveButtons" type="button" name="button" onclick="initiateAdd();">Add</button>
+                <button class="AddRemoveButtons" type="button" name="button" onclick="initiateRemove();">Remove</button>
+            </div>
+        </div>
+        <div class="Header">
+            <a href="#" onclick="toggleStatsBar();"><img class="icon left" src="../Images/SidebarIcon.png"></a>
+            <img class="logo" src="../Images/SCALogo.png" alt="">
+            <a href="#"><img id="profileIcon" class="icon right" src="../Images/ProfileIcon.png" alt=""></a>
+        </div>
+        <div id="FileDroperContainer">
+
+        </div>
+        <script src="app.js" charset="utf-8"></script>
+    </body>
+</html>
