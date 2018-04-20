@@ -109,6 +109,9 @@ body {
     width: 100%;
     background: linear-gradient(white, rgba(255, 255, 255, 0.2));
 }
+.SpaceBottom {
+    margin-bottom: 100px;
+}
 p {
     margin-top: 2px;
     margin-bottom: 2px;
@@ -138,4 +141,34 @@ h2 {
     margin-top: 10px;
     padding: 8px 5px 8px 5px;
     margin-left: 42%;
+}
+
+#ReschedulePopup {
+    position: fixed;
+    border-radius: 10px;
+    height: 200px;
+    width: 500px;
+    top: 200px;
+    left: calc(50vw - 250px);
+    background-color: var(--ThemeColor);
+    padding: 20px;
+}
+#ReschedulePopup div {
+    width: 150px;
+    height: 0px;
+    bottom: 10px;
+    margin: 10px auto;
+}
+#ReschedulePopup h3 {
+    width: 100%;
+    color: white;
+    text-align: center;
+}
+#ReschedulePopup span {
+    position: relative;
+    float: left;
+    color: white;
+    width: 30%;
+    margin-top: 15px;
+    margin-left: 2%;
 }
