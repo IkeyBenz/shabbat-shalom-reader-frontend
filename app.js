@@ -16,13 +16,18 @@ function toggleForm() {
 }
 function initializeSubscribeForm() {
     database.ref('SubcriptionOptions').on('value', function(snapshot) {
-        const subOptionsContainer = document.getElementById('subscriptionsView');
-        while (subOptionsContainer.lastChild) {
-            subOptionsContainer.removeChild(subOptionsContainer.lastChild);
+        const affiliates = document.getElementById('SCA-Affiliates');
+        const other = document.getElementById('Other');
+        while (affiliates.lastChild) {
+            affiliates.removeChild(affiliates.lastChild);
+        }
+        while (other.lastChild) {
+            other.removeChild(other.lastChild);
         }
         snapshot.forEach(function(child) {
             const author = child.val().Author.toString();
             const title = child.val().Title.toString();
+            const category = child.val().Category.toString();
             const subscriptionKey = child.key;
             const span = document.createElement('span');
             const input = document.createElement('INPUT');
@@ -33,7 +38,11 @@ function initializeSubscribeForm() {
             span.appendChild(input);
             span.appendChild(desc);
             span.appendChild(document.createElement('br'));
-            subOptionsContainer.appendChild(span);
+            if (category == "Affiliates") {
+                affiliates.appendChild(span);
+            } else if (category == "Other") {
+                other.appendChild(span);
+            }
         })
     })
     toggleForm();

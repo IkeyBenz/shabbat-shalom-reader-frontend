@@ -9,8 +9,17 @@
     width: auto;
     margin-top: 20px;
 }
+.TextContainer {
+    max-width: 600px;
+    margin: 50px auto;
+    margin-bottom: -40px;
+    text-align: center;
+}
+.TextContainer h2 {
+    color: white;
+}
 .login-page {
-  width: 460px;
+  width: 480px;
   padding: 8% 0 0;
   margin: auto;
 }
@@ -102,6 +111,9 @@ input[type="checkbox"] {
 }
 .container .info span .fa {
   color: #EF3B3A;
+}
+#subscriptionsView {
+    margin-bottom: 20px;
 }
 ul {
     list-style: none;

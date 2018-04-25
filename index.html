@@ -12,21 +12,27 @@
         <div class="Header">
             <img src="Images/SCALogo.png" alt="">
         </div>
+        <div class="TextContainer">
+            <h2>Shabbat Shalom from the SCA! Choose your subscription preferences below and automatically receive a personalized PDF every Friday with content from your favorite Rabbi’s and Community Leaders.</h2>
+        </div>
         <div class="login-page">
             <div class="form">
-                <form class="register-form">
+                <form class="register-form" onsubmit="pushChanges()">
                     <input type="text" placeholder="email address" id="email"/>
                     <input type="text" placeholder="zip code" id="zipcode">
                     <h4 style="width: 100%; text-align: center;">Subscription Preferences:</h4>
                     <div id="subscriptionsView">
-
+                        <h3>SCA Affiliates:</h3>
+                        <div id="SCA-Affiliates"></div>
+                        <h3>Other Must Reads:</h3>
+                        <div id="Other"></div>
                     </div>
-                    <button onclick="pushChanges()" id="subscribeButton">Subscribe</button>
+                    <button type="submit" id="subscribeButton">Subscribe</button>
                     <p class="message">Already subscribed? <a href="#" onclick="toggleForm();">Edit subscriptions</a></p>
                 </form>
-                <form class="login-form">
+                <form class="login-form" onsubmit="editSubscriptions()">
                     <input type="text" placeholder="email address" id="editemail"/>
-                    <button onclick="editSubscriptions()">Edit Subscriptions</button>
+                    <button type="submit">Edit Subscriptions</button>
                     <p class="message">Not subscribed? <a href="#" onclick="toggleForm();">Subscribe now</a></p>
                 </form>
             </div>
