@@ -233,8 +233,35 @@ function initiateAdd() {
     const submitButton = document.createElement('button');
     submitButton.setAttribute('onclick', 'addSubscription();');
     submitButton.appendChild(document.createTextNode('Add Subscription'));
+    const categoryOtherDiv = document.createElement('div');
+    categoryOtherDiv.setAttribute('class', 'CategoryInfoContainer');
+    const categoryOtherInput = document.createElement('input');
+    categoryOtherInput.setAttribute('type', 'radio');
+    categoryOtherInput.setAttribute('value', "Other");
+    categoryOtherInput.setAttribute('name', 'Category');
+    categoryOtherInput.setAttribute('id', 'Category-Other');
+    const categoryOtherLabel = document.createElement('label');
+    categoryOtherLabel.setAttribute('for', 'Category-Other');
+    categoryOtherLabel.appendChild(document.createTextNode("Other Must Reads"));
+    categoryOtherDiv.appendChild(categoryOtherLabel);
+    categoryOtherDiv.appendChild(categoryOtherInput);
+    const categoryAffiliatesDiv = document.createElement('div');
+    categoryAffiliatesDiv.setAttribute('class', 'CategoryInfoContainer');
+    const categoryAffiliatesInput = document.createElement('input');
+    categoryAffiliatesInput.setAttribute('type', 'radio');
+    categoryAffiliatesInput.setAttribute('value', "Affiliates");
+    categoryAffiliatesInput.setAttribute('name', 'Category');
+    categoryAffiliatesInput.setAttribute('id', 'Category-Affiliates');
+    const categoryAffiliatesLabel = document.createElement('label');
+    categoryAffiliatesLabel.setAttribute('for', 'Category-Affiliates');
+    categoryAffiliatesLabel.appendChild(document.createTextNode("SCA Affiliates"));
+    categoryAffiliatesDiv.appendChild(categoryAffiliatesLabel);
+    categoryAffiliatesDiv.appendChild(categoryAffiliatesInput);
+
     popup.appendChild(authorInput);
     popup.appendChild(titleInput);
+    popup.appendChild(categoryOtherDiv);
+    popup.appendChild(categoryAffiliatesDiv);
     popup.appendChild(submitButton);
     document.body.appendChild(popup);
 }
@@ -328,21 +355,32 @@ function reschedule() {
     document.getElementById('ReschedulePopup').style.display = 'none';
 }
 function addSubscription() {
-    var newSub = database.ref('SubcriptionOptions').push({
-        Author: document.getElementById('authorInput').value,
-        Title: document.getElementById('titleInput').value,
-        Subscribers: 0
-    });
-    database.ref('Subscribers').once('value', function(subscribers) {
-        subscribers.forEach(function(subscriber) {
-            if (subscriber) {
-                database.ref(`Subscribers/${subscriber.key}/Subscriptions/${newSub.key}`).set(false);
-            }
+    if (document.getElementById('authorInput').value != "" && document.getElementById('titleInput').value != "" && (document.getElementById('Category-Other').checked || document.getElementById('Category-Affiliates').checked)) {
+        var category = "";
+        if (document.getElementById('Category-Affiliates').checked) {
+            category = "Affiliates";
+        } else {
+            category = "Other";
+        }
+        var newSub = database.ref('SubcriptionOptions').push({
+            Author: document.getElementById('authorInput').value,
+            Title: document.getElementById('titleInput').value,
+            Category: category,
+            Subscribers: 0
+        });
+        database.ref('Subscribers').once('value', function(subscribers) {
+            subscribers.forEach(function(subscriber) {
+                if (subscriber) {
+                    database.ref(`Subscribers/${subscriber.key}/Subscriptions/${newSub.key}`).set(false);
+                }
+            })
         })
-    })
-    document.body.removeChild(document.getElementById('NewSubscriptionPopup'));
-    initializeImageUploaderView();
-    alert("Your new subscription has been saved.");
+        document.body.removeChild(document.getElementById('NewSubscriptionPopup'));
+        initializeImageUploaderView();
+        alert("Your new subscription has been saved.");
+    } else {
+        alert("Please make sure all inputs are filled out.");
+    }
 }
 function removeSubscription(subscriptionID) {
     subscriptionID = subscriptionID.slice(0, -7);
