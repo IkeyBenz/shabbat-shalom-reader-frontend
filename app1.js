@@ -220,7 +220,8 @@ auth.onAuthStateChanged(function(user) {
 })
 function sendVerificationEmail() {
     firebase.auth().currentUser.sendEmailVerification().then(function() {
-        alert(`Verification email sent to ${firebase.auth().currentUser.email}`);
+        alert(`Verification email sent to ${firebase.auth().currentUser.email}. Once verified, come back and login.`);
+        firebase.auth().signOut();
     }).catch(function(error) {
         alert(error.message);
     });
