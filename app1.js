@@ -43,7 +43,10 @@ function showSubscriptionOptions() {
     });
 }
 function showLoginForm() {
-    $('#main-form').html('<input type="email" autocomplete="email" placeholder="email" id="email-login"><input type="password" autocomplete="password" placeholder="Password" id="password-login"><button type="button" onclick="signUserIn()">Sign In</button>');
+    $('#main-form').html(`<input type="email" autocomplete="email" placeholder="email" id="email-login">
+    <input type="password" autocomplete="password" placeholder="Password" id="password-login">
+    <button type="button" onclick="signUserIn()">Sign In</button>
+    <p class="message"> Don't have an account? <a onclick="showSignUpForm()">Sign Up</a></p>`);
 }
 function signUserIn() {
     auth.signInWithEmailAndPassword($('#email-login').val(), $('#password-login').val())
@@ -83,7 +86,9 @@ function showSignUpForm() {
         <option>Shaare Shalom</option>
         <option id="option-other">Other</option>
     </select>
-    <div id="other-input-place"></div><button type="button" onclick="handleNewSignUp()">Submit</button>`);
+    <div id="other-input-place"></div>
+    <button type="button" onclick="handleNewSignUp()">Submit</button>
+    <p class="message">Already have an account? <a onclick="showLoginForm()">Sign In</a></p>`);
 }
 function showUsersSubscriptionOptions() {
     if (firebase.auth().currentUser) {
@@ -123,15 +128,15 @@ function handleNewSignUp() {
         .then(function() {
             auth.signInWithEmailAndPassword(emailAddress, password)
             .then(function() {
+                firebase.auth().currentUser.updateProfile({
+                    displayName: firstName
+                });
                 database.ref("Users/" + firebase.auth().currentUser.uid).set({
                     FirstName: firstName,
                     LastName: lastName,
                     Email: emailAddress,
                     Zipcode: zipcode,
                     Synagogue: synagogue
-                });
-                firebase.auth().currentUser.updateProfile({
-                    displayName: firstName
                 });
             })
             .catch(function(error) {
@@ -182,7 +187,6 @@ function loadUsersSubscriptions() {
             }
         })
         database.ref("Users/" + firebase.auth().currentUser.uid).once('value', function(snapshot) {
-            console.log('this also ran')
             const subscriptions = snapshot.val().Subscriptions;
             if (subscriptions) {
                 const keys = Object.keys(subscriptions);
@@ -196,26 +200,42 @@ function loadUsersSubscriptions() {
     })
 }
 function pushUserSubscriptionChanges() {
-    console.log('this supposedly happened')
     database.ref('Users/'+firebase.auth().currentUser.uid+"/Subscriptions").set(subscriptionData())
     alert('Your subscription preferences have been saved.');
+    firebase.auth().currentUser.signOut().catch(function(error) {
+        alert(error.message);
+    });
 }
 
 auth.onAuthStateChanged(function(user) {
     if (user) {
         if (user.emailVerified) {
-            console.log('showing subscriptions')
             showUsersSubscriptionOptions();
         } else {
-            $('#main-form').html(`<h3>We've created your account, ${user.displayName}</h3><h4>Please verify your email address to continue.</h4><button onclick="sendVerificationEmail()">Send Verification Email</button>`);
+            $('#main-form').html(`<h3>We've created your account, ${firebase.auth().currentUser.displayName}</h3><h4>Please verify your email address to continue.</h4><button onclick="sendVerificationEmail()">Send Verification Email</button>`);
         }
     } else {
         showSubscriptionOptions();
     }
 })
 function sendVerificationEmail() {
-    firebase.auth().currentUser.sendEmailVerification().then(function() {
-        alert(`Verification email sent to ${firebase.auth().currentUser.email}`);
+    var actionCodeSettings = {
+        // URL you want to redirect back to. The domain (www.example.com) for this
+        // URL must be whitelisted in the Firebase Console.
+        url: 'https://www.scaupdates.org/shabbatshalom',
+        // This must be true.
+        handleCodeInApp: true,
+        iOS: {
+            bundleId: 'com.example.ios'
+        },
+        android: {
+            packageName: 'com.example.android',
+            installApp: false,
+            minimumVersion: '1'
+        }
+    };
+    firebase.auth().sendSignInLinkToEmail(firebase.auth().currentUser.email, actionCodeSettings).then(function() {
+        alert(`Sign-in link successfully sent to ${firebase.auth().currentUser.email}`);
     }).catch(function(error) {
         alert(error.message);
     });
