@@ -212,7 +212,7 @@ auth.onAuthStateChanged(function(user) {
         if (user.emailVerified) {
             showUsersSubscriptionOptions();
         } else {
-            $('#main-form').html(`<h3>We've created your account, ${firebase.auth().currentUser.displayName}</h3><h4>Please verify your email address to continue.</h4><button onclick="sendVerificationEmail()">Send Verification Email</button>`);
+            $('#main-form').html(`<h3>We've created your account.</h3><h4>Please verify your email address to continue.</h4><button onclick="sendVerificationEmail()">Send Verification Email</button>`);
         }
     } else {
         showSubscriptionOptions();
