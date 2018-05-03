@@ -215,7 +215,7 @@ auth.onAuthStateChanged(function(user) {
 })
 function sendVerificationEmail() {
     firebase.auth().currentUser.sendEmailVerification().then(function() {
-        alert("Verification email sent.");
+        alert(`Verification email sent to ${firebase.auth().currentUser.email}`);
     }).catch(function(error) {
         alert(error.message);
     });
