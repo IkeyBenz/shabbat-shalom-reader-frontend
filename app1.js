@@ -202,9 +202,9 @@ function loadUsersSubscriptions() {
 function pushUserSubscriptionChanges() {
     database.ref('Users/'+firebase.auth().currentUser.uid+"/Subscriptions").set(subscriptionData())
     alert('Your subscription preferences have been saved.');
-    firebase.auth().currentUser.signOut().catch(function(error) {
-        alert(error.message);
-    });
+    firebase.auth().signOut().catch(function(error) {alert(error.message)})
+
+
 }
 
 auth.onAuthStateChanged(function(user) {
