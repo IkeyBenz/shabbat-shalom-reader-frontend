@@ -9,10 +9,61 @@ var config = {
 };
 firebase.initializeApp(config);
 var database = firebase.database();
-window.onload = initializeSubscribeForm;
+var authentication = firebase.auth();
+var loggedInUser = authentication.currentUser;
 
-function toggleForm() {
-     $('form').animate({height: "toggle", opacity: "toggle"}, "slow");
+function showSubscriptionOptions() {
+    database.ref('SubcriptionOptions').once('value', function(snapshot) {
+        snapshot.forEach(function(subscription) {
+            const author = subscription.val().Author;
+            const title = subscription.val().Title;
+            const category = subscription.val().Category;
+            const html = `<span>${author}: ${title}<br><br></span>`;
+            if (category == "Affiliates") {
+                $('#SCA-Affiliates').append(html);
+            } else if (category == "Other") {
+                $('#Other').append(html);
+            }
+        });
+    });
+}
+function showLoginForm() {
+    $('#main-form').html('<input type="email" autocomplete="email" placeholder="email" id="email-login"><input type="password" autocomplete="password" placeholder="Password" id="password-login"><button type="button" onclick="signUserIn()">Sign In</button>');
+}
+function signUserIn() {
+    authentication.signInWithEmailAndPassword($('#email-login').val(), $('#password-login').val())
+    .catch(function(error) {
+        alert(error.message);
+    });
+}
+function showSignUpForm() {
+    $('#main-form').html('<h1 style="width: 100%; text-align: center; margin-bottom: 40px;">Sign Up</h1><input type="text" autocomplete="given-name" placeholder="First Name" id="firstName-signup"><input type="text" autocomplete="family-name" placeholder="Last Name" id="lastName-signup"><input type="email" autocomplete="email" placeholder="Email Address" id="email-signup"><input type="text" autocomplete="postal-code" placeholder="Zip Code" id="zip-signup"><input type="password" autocomplete="password" placeholder="Password" id="password-signup"><input type="password" autocomplete="password" placeholder="Confirm Password" id="confirmedPassword-signup"><button type="button" onclick="handleNewSignUp()">Submit</button>');
+}
+function handleNewSignUp() {
+    const firstName = $('#firstName-signup').val();
+    const lastName = $('#lastName-signup').val();
+    const emailAddress = $('#email-signup').val();
+    const zipcode = $('#zip-signup').val();
+    const password = $('#password-signup').val();
+    const confirmedPassword = $('#confirmedPassword-signup').val();
+    const fields = [firstName, lastName, emailAddress, zipcode];
+    const passwordsMatch = password == confirmedPassword;
+    var allFilledOut = true;
+    for (var i = 0; i < fields.length; i++) {if (fields[i] == "") {allFilledOut = false}}
+    if (!passwordsMatch) {alert("Passwords do not match.")}
+    if (!allFilledOut) {alert("Form not completely filled out.")}
+    if (passwordsMatch && allFilledOut) {
+        authentication.createUserWithEmailAndPassword(emailAddress, password)
+        .then(function() {
+            authentication.signInWithEmailAndPassword(emailAddress, password)
+            .catch(function(error) {
+                console.log("Couldn't log user in.");
+            })
+        })
+        .catch(function(error) {
+            alert(error.message);
+        });
+    }
 }
 function initializeSubscribeForm() {
     database.ref('SubcriptionOptions').on('value', function(snapshot) {
@@ -45,22 +96,39 @@ function initializeSubscribeForm() {
             }
         })
     })
-    toggleForm();
 }
 
-
-function requiredFieldsAreFilledOut() {
-    if (document.getElementById('email').value == "") {return false}
-    if (document.getElementById('zipcode').value == "") {return false}
-    var atLeastOnecheckboxIsSelected = false;
-    const inputs = document.getElementsByClassName('subscription');
-    Array.prototype.forEach.call(inputs, function(input) {
-        if (input.checked) {
-            atLeastOnecheckboxIsSelected = true;
+authentication.onAuthStateChanged(function(user) {
+    if (user) {
+        loggedInUser = user;
+        if (user.emailVerified) {
+            // Fix the page to cater to them
+        } else {
+            $('#main-form').html('<h3>Almost there...</h3><h4>Please verify your email</h4><button onclick="sendVerificationEmail()">Send Verification Email</button>');
         }
-    })
-    return atLeastOnecheckboxIsSelected
+    } else {
+        showSubscriptionOptions();
+    }
+})
+function sendVerificationEmail() {
+    authentication.currentUser.sendEmailVerification().then(function() {
+        alert("Verification email sent.");
+    }).catch(function(error) {
+        alert(error.message);
+    });
 }
+// function requiredFieldsAreFilledOut() {
+//     if (document.getElementById('email').value == "") {return false}
+//     if (document.getElementById('zipcode').value == "") {return false}
+//     var atLeastOnecheckboxIsSelected = false;
+//     const inputs = document.getElementsByClassName('subscription');
+//     Array.prototype.forEach.call(inputs, function(input) {
+//         if (input.checked) {
+//             atLeastOnecheckboxIsSelected = true;
+//         }
+//     })
+//     return atLeastOnecheckboxIsSelected
+// }
 function editSubscriptions() {
     const emailAddress = document.getElementById('editemail').value.toLowerCase();
     if (emailAddress == "") {

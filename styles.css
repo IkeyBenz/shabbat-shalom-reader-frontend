@@ -76,9 +76,6 @@ input[type="checkbox"] {
   color: #1665aa;
   text-decoration: none;
 }
-.form .register-form {
-  display: none;
-}
 .container {
   position: relative;
   z-index: 1;

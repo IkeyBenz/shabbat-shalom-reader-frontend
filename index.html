@@ -4,9 +4,9 @@
         <meta charset="utf-8">
         <link rel="stylesheet" href="styles.css">
         <script src="https://www.gstatic.com/firebasejs/4.11.0/firebase.js"></script>
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
         <script src="app.js" charset="utf-8"></script>
-        <title>Update Subscriptions</title>
+        <title>SCA Shabbat Shalom Email Service</title>
     </head>
     <body>
         <div class="Header">
@@ -17,23 +17,18 @@
         </div>
         <div class="login-page">
             <div class="form">
-                <form class="register-form" onsubmit="pushChanges()">
-                    <input type="text" placeholder="email address" id="email"/>
-                    <input type="text" placeholder="zip code" id="zipcode">
+                <form class="register-form" id="main-form">
                     <h4 style="width: 100%; text-align: center;">Subscription Preferences:</h4>
                     <div id="subscriptionsView">
                         <h3>SCA Affiliates:</h3>
-                        <div id="SCA-Affiliates"></div>
+                        <div id="SCA-Affiliates">
+                        </div>
                         <h3>Other Must Reads:</h3>
                         <div id="Other"></div>
                     </div>
-                    <button type="submit" id="subscribeButton">Subscribe</button>
-                    <p class="message">Already subscribed? <a href="#" onclick="toggleForm();">Edit subscriptions</a></p>
-                </form>
-                <form class="login-form" onsubmit="editSubscriptions()">
-                    <input type="text" placeholder="email address" id="editemail"/>
-                    <button type="submit">Edit Subscriptions</button>
-                    <p class="message">Not subscribed? <a href="#" onclick="toggleForm();">Subscribe now</a></p>
+                    <button type="button" onclick="showLoginForm()">Login</button>
+                    <button type="button" onclick="showSignUpForm()">Sign Up</button>
+
                 </form>
             </div>
         </div>
