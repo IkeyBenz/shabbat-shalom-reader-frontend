@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8">
         <link rel="stylesheet" href="styles.css">
-        <script src="https://www.gstatic.com/firebasejs/4.11.0/firebase.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/4.13.0/firebase.js"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
         <script src="app1.js" charset="utf-8"></script>
         <title>SCA Shabbat Shalom Email Service</title>
@@ -13,11 +13,11 @@
             <img src="Images/SCALogo.png" alt="">
         </div>
         <div class="TextContainer">
-            <h2>Shabbat Shalom from the SCA! Choose your subscription preferences below and automatically receive a personalized PDF every Friday with content from your favorite Rabbi’s and Community Leaders.</h2>
+            <h2>Shabbat Shalom from the SCA! Choose your subscription preferences below and automatically receive a personalized PDF every Friday with content from your favorite Rabbis and Community Leaders.</h2>
         </div>
         <div class="login-page">
             <div class="form">
-                <form class="register-form" id="main-form">
+                <div class="register-form" id="main-form">
                     <h4 style="width: 100%; text-align: center;">Subscription Preferences:</h4>
                     <div id="subscriptionsView">
                         <h3>SCA Affiliates:</h3>
@@ -29,7 +29,36 @@
                     <button type="button" onclick="showLoginForm()">Login</button>
                     <button type="button" onclick="showSignUpForm()">Sign Up</button>
 
-                </form>
+                    <select name="Synagogue-select" placeholder="Synagogue Affiliation">
+                        <option disabled selected>Synagogue Affiliation</option>
+                        <option>Ahba Ve Ahva</option>
+                        <option>Ave N Sephardic Congregation</option>
+                        <option>Bet Rachel</option>
+                        <option>Beth Torah</option>
+                        <option>Bnei Yitzchak</option>
+                        <option>Congregation Beth Yosef</option>
+                        <option>Congregation Ohel Yosef of Oakhurst</option>
+                        <option>Hochama U'Mussar</option>
+                        <option>Kol Israel Congregation</option>
+                        <option>Magen David Synagogue</option>
+                        <option>Magen David of Belle Harbour</option>
+                        <option>Magen David of West Deal</option>
+                        <option>Manhattan East Synagogue - Congregation Shaare Mizrah</option>
+                        <option>Mikdash Eliyahu</option>
+                        <option>Ohel David and Shlomo Congregation of Manhattan Beach</option>
+                        <option>Ohel Yishak of Allenhusrt</option>
+                        <option>Edmond J. Safra Synagogue of Deal</option>
+                        <option>Edmond J. Safra Synagogue of Manhattan</option>
+                        <option>Edmond J. Safra Synagogue of Turnberry</option>
+                        <option>Sephardic Synagogue</option>
+                        <option>Sephardic Synagogue of Elberon</option>
+                        <option>Shaare Shalom</option>
+                        <option id="option-other">Other</option>
+                    </select>
+                    <div id="other-input-place"></div>
+                    <input type="text" placeholder="Other Synagogue" id="otherSynagogueInput">
+
+                </div>
             </div>
         </div>
     </body>
