@@ -219,23 +219,8 @@ auth.onAuthStateChanged(function(user) {
     }
 })
 function sendVerificationEmail() {
-    var actionCodeSettings = {
-        // URL you want to redirect back to. The domain (www.example.com) for this
-        // URL must be whitelisted in the Firebase Console.
-        url: 'https://www.scaupdates.org/shabbatshalom',
-        // This must be true.
-        handleCodeInApp: true,
-        iOS: {
-            bundleId: 'com.example.ios'
-        },
-        android: {
-            packageName: 'com.example.android',
-            installApp: false,
-            minimumVersion: '1'
-        }
-    };
-    firebase.auth().sendSignInLinkToEmail(firebase.auth().currentUser.email, actionCodeSettings).then(function() {
-        alert(`Sign-in link successfully sent to ${firebase.auth().currentUser.email}`);
+    firebase.auth().currentUser.sendEmailVerification().then(function() {
+        alert(`Verification email sent to ${firebase.auth().currentUser.email}`);
     }).catch(function(error) {
         alert(error.message);
     });
