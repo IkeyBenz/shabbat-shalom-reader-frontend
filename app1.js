@@ -123,7 +123,7 @@ function handleNewSignUp() {
     if (!passwordsMatch) {alert("Passwords do not match.")}
     if (!allFilledOut) {alert("Form not completely filled out.")}
     if (!synagogueSelected) {alert("Please select the synagogue you're affiliated with.")}
-    if (passwordsMatch && allFilledOut) {
+    if (passwordsMatch && allFilledOut && synagogueSelected) {
         auth.createUserWithEmailAndPassword(emailAddress, password)
         .then(function() {
             auth.signInWithEmailAndPassword(emailAddress, password)
@@ -203,8 +203,6 @@ function pushUserSubscriptionChanges() {
     database.ref('Users/'+firebase.auth().currentUser.uid+"/Subscriptions").set(subscriptionData())
     alert('Your subscription preferences have been saved.');
     firebase.auth().signOut().catch(function(error) {alert(error.message)})
-
-
 }
 
 auth.onAuthStateChanged(function(user) {
