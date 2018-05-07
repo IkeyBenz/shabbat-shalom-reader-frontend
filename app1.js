@@ -46,7 +46,20 @@ function showLoginForm() {
     $('#main-form').html(`<input type="email" autocomplete="email" placeholder="email" id="email-login">
     <input type="password" autocomplete="password" placeholder="Password" id="password-login">
     <button type="button" onclick="signUserIn()">Sign In</button>
+    <p class="message"> Forgot Password? <a onclick="sendPasswordReset()">Reset Password</a></p>
     <p class="message"> Don't have an account? <a onclick="showSignUpForm()">Sign Up</a></p>`);
+}
+function sendPasswordReset() {
+    if ($('#email-login').val() != "") {
+        auth.sendPasswordResetEmail($('#email-login').val()).then(function() {
+            alert(`We've sent you an email to ${$('#email-login').val()} to change your password.`);
+        }).catch(function(error) {
+            alert('Something went wrong:\n' + error.message);
+        });
+    } else {
+        alert('Please enter your email address in order to recieve a password reset email.');
+    }
+
 }
 function signUserIn() {
     auth.signInWithEmailAndPassword($('#email-login').val(), $('#password-login').val())
