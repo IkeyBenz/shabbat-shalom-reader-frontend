@@ -25,7 +25,8 @@ $('#Synagogue-select').change(function() {
     }
 })
 function showSubscriptionOptions() {
-    $('#main-form').html('<h4 style="width: 100%; text-align: center;">Subscription Preferences:</h4><div id="subscriptionsView"><h3>SCA Affiliates:</h3><div id="SCA-Affiliates"></div><h3>Other Must Reads:</h3><div id="Other"></div></div><button type="button" onclick="showLoginForm()">Login</button><button type="button" onclick="showSignUpForm()">Sign Up</button>')
+    $('#main-form').html('<h4 style="width: 100%; text-align: center;">Subscription Preferences:</h4><div id="subscriptionsView"><h3>SCA Affiliates:</h3><div id="SCA-Affiliates"></div><h3>Other Must Reads:</h3><div id="Other"></div></div><button type="button" onclick="showLoginForm()">Login</button><button type="button" onclick="showSignUpForm()">Sign Up</button>');
+
     database.ref('SubcriptionOptions').once('value', function(snapshot) {
         $('#SCA-Affiliates').html("");
         $('#Other').html("");
@@ -171,32 +172,16 @@ function subscriptionData() {
 }
 function loadUsersSubscriptions() {
     database.ref('SubcriptionOptions').on('value', function(snapshot) {
-        const affiliates = document.getElementById('SCA-Affiliates');
-        const other = document.getElementById('Other');
-        while (affiliates.lastChild) {
-            affiliates.removeChild(affiliates.lastChild);
-        }
-        while (other.lastChild) {
-            other.removeChild(other.lastChild);
-        }
+        $('#SCA-Affiliates').html('');
+        $('#Other').html('');
         snapshot.forEach(function(child) {
-            const author = child.val().Author.toString();
-            const title = child.val().Title.toString();
-            const category = child.val().Category.toString();
-            const subscriptionKey = child.key;
-            const span = document.createElement('span');
-            const input = document.createElement('INPUT');
-            const desc = document.createTextNode(`${author}: ${title}`);
-            input.setAttribute('type', 'checkbox');
-            input.setAttribute('id', subscriptionKey);
-            input.setAttribute('class', 'subscription');
-            span.appendChild(input);
-            span.appendChild(desc);
-            span.appendChild(document.createElement('br'));
+            const author = child.val().Author;
+            const title = child.val().Title;
+            const category = child.val().Category;
             if (category == "Affiliates") {
-                affiliates.appendChild(span);
+                $('#SCA-Affiliates').append(`<span><input type="checkbox" id="${child.key}">${author}: ${title}<br></span>`);
             } else if (category == "Other") {
-                other.appendChild(span);
+                $('#Other').append(`<span><input type="checkbox" id="${child.key}">${author}: ${title}<br></span>`);
             }
         })
         database.ref("Users/" + firebase.auth().currentUser.uid).once('value', function(snapshot) {
