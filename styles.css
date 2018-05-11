@@ -114,8 +114,11 @@ input[type="checkbox"] {
   color: #EF3B3A;
 }
 #subscriptionsView {
-    margin-bottom: 20px;
+  margin-bottom: 20px;
 }
+/* #subscriptionsView div {
+  margin-left: -20px;
+} */
 ul {
     list-style: none;
 }

@@ -178,10 +178,13 @@ function loadUsersSubscriptions() {
             const author = child.val().Author;
             const title = child.val().Title;
             const category = child.val().Category;
+            // var indicatorColor = "red";
+            // if (child.val().DownloadURL) {indicatorColor = "green"}
+            // const circleHTML = `<svg width="20" height="20"><circle cx="5" cy="15" r="5" stroke="green" stroke-width="0" fill="${ indicatorColor }" /></svg>`;
             if (category == "Affiliates") {
-                $('#SCA-Affiliates').append(`<span><input type="checkbox" id="${child.key}">${author}: ${title}<br></span>`);
+                $('#SCA-Affiliates').append(`<span><input type="checkbox" class="subscription" id="${child.key}">${author}: ${title}<br></span>`);
             } else if (category == "Other") {
-                $('#Other').append(`<span><input type="checkbox" id="${child.key}">${author}: ${title}<br></span>`);
+                $('#Other').append(`<span><input type="checkbox" class="subscription" id="${child.key}">${author}: ${title}<br></span>`);
             }
         })
         database.ref("Users/" + firebase.auth().currentUser.uid).once('value', function(snapshot) {
@@ -190,6 +193,7 @@ function loadUsersSubscriptions() {
                 const keys = Object.keys(subscriptions);
                 for (var i = 0; i < keys.length; i++) {
                     if (subscriptions[keys[i]]) {
+                        console.log(keys[i]);
                         $(`#${keys[i]}`).prop('checked', true);
                     }
                 }
