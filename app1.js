@@ -110,6 +110,7 @@ function circle(color) {
 function showUsersSubscriptionOptions() {
     if (firebase.auth().currentUser) {
         $('#main-form').html(`
+        <div style="margin-top: 10px"><span>${circle("green")} = Content Uploaded<br>${circle("red")} = Content not loaded yet</span></div>
         <h3 style="width: 100%; text-align: center;">${firebase.auth().currentUser.displayName}'s Subscriptions:</h3> 
         <div id="subscriptionsView">
             <h3>SCA Affiliates:</h3>
@@ -119,7 +120,6 @@ function showUsersSubscriptionOptions() {
         </div>
         <button onclick="pushUserSubscriptionChanges()">Confirm Changes</button>
         <button onclick="sendPDFNow()">Send Content Now</button>
-        <div style="margin-top: 10px"><span>${circle("green")} = Content Uploaded<br>${circle("red")} = Content not loaded yet</span></div>
         <p class="message">Not ${firebase.auth().currentUser.displayName}? <a onclick="logUserOut()">Log Out</a></p>`);
         loadUsersSubscriptions();
     } else {
