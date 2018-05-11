@@ -104,17 +104,23 @@ function showSignUpForm() {
     <button type="button" onclick="handleNewSignUp()">Submit</button>
     <p class="message">Already have an account? <a onclick="showLoginForm()">Sign In</a></p>`);
 }
+function circle(color) {
+    return `<svg width="12" height="10"><circle cx="5" cy="5" r="5" stroke="green" stroke-width="0" fill="${color}" /></svg>`;
+}
 function showUsersSubscriptionOptions() {
     if (firebase.auth().currentUser) {
-        $('#main-form').html(`<h3 style="width: 100%; text-align: center;">${firebase.auth().currentUser.displayName}'s Subscriptions:</h3>
-                        <div id="subscriptionsView">
-                            <h3>SCA Affiliates:</h3>
-                            <div id="SCA-Affiliates"></div>
-                            <h3>Other Must Reads:</h3>
-                            <div id="Other"></div>
-                        </div>
-                        <button onclick="pushUserSubscriptionChanges()">Confirm Changes</button>
-                        <p class="message">Not ${firebase.auth().currentUser.displayName}? <a onclick="logUserOut()">Log Out</a></p>`);
+        $('#main-form').html(`
+        <h3 style="width: 100%; text-align: center;">${firebase.auth().currentUser.displayName}'s Subscriptions:</h3> 
+        <div id="subscriptionsView">
+            <h3>SCA Affiliates:</h3>
+            <div id="SCA-Affiliates"></div>
+            <h3>Other Must Reads:</h3>
+            <div id="Other"></div>
+        </div>
+        <button onclick="pushUserSubscriptionChanges()">Confirm Changes</button>
+        <button onclick="sendPDFNow()">Send Content Now</button>
+        <div style="margin-top: 10px"><span>${circle("green")} = Content Uploaded<br>${circle("red")} = Content not loaded yet</span></div>
+        <p class="message">Not ${firebase.auth().currentUser.displayName}? <a onclick="logUserOut()">Log Out</a></p>`);
         loadUsersSubscriptions();
     } else {
         console.log('user is null?')
@@ -162,6 +168,13 @@ function handleNewSignUp() {
         });
     }
 }
+
+function sendPDFNow() {
+    database.ref('Users/'+firebase.auth().currentUser.uid+"/Subscriptions").set(subscriptionData());
+    $.post('https://sca-email-server.herokuapp.com/onDemand', {email: auth.currentUser.email}, function (data) {
+        alert(`We're preparing your pdf. You should recieve it at ${auth.currentUser.email} shortly.`);
+    });
+}
 function subscriptionData() {
     data = {}
     const inputs = document.getElementsByClassName('subscription');
@@ -171,22 +184,25 @@ function subscriptionData() {
     return data;
 }
 function loadUsersSubscriptions() {
+    console.log('This function ran');
     database.ref('SubcriptionOptions').on('value', function(snapshot) {
         $('#SCA-Affiliates').html('');
         $('#Other').html('');
+        $('#subscriptionsView div').css('margin-left', '-21px');
         snapshot.forEach(function(child) {
             const author = child.val().Author;
             const title = child.val().Title;
             const category = child.val().Category;
-            // var indicatorColor = "red";
-            // if (child.val().DownloadURL) {indicatorColor = "green"}
-            // const circleHTML = `<svg width="20" height="20"><circle cx="5" cy="15" r="5" stroke="green" stroke-width="0" fill="${ indicatorColor }" /></svg>`;
+            var indicatorColor = "red";
+            if (child.val().DownloadURL) {indicatorColor = "green"}
+            const circleHTML = `<svg width="20" height="10"><circle cx="5" cy="5" r="5" stroke="green" stroke-width="0" fill="${indicatorColor}" /></svg>`;
             if (category == "Affiliates") {
-                $('#SCA-Affiliates').append(`<span><input type="checkbox" class="subscription" id="${child.key}">${author}: ${title}<br></span>`);
+                $('#SCA-Affiliates').append(`<span>${circleHTML}<input type="checkbox" class="subscription" id="${child.key}">${author}: ${title}<br><br></span>`);
             } else if (category == "Other") {
-                $('#Other').append(`<span><input type="checkbox" class="subscription" id="${child.key}">${author}: ${title}<br></span>`);
+                $('#Other').append(`<span>${circleHTML}<input type="checkbox" class="subscription" id="${child.key}">${author}: ${title}<br><br></span>`);
             }
-        })
+        });
+        $('#subscriptionsView div span').css({'display': 'inline-block', 'padding-left':'45px', 'text-indent':'-45px'});
         database.ref("Users/" + firebase.auth().currentUser.uid).once('value', function(snapshot) {
             const subscriptions = snapshot.val().Subscriptions;
             if (subscriptions) {

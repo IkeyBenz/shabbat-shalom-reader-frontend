@@ -19,7 +19,7 @@
 }
 .login-page {
   width: 480px;
-  padding: 8% 0 0;
+  padding: 20px 0 0;
   margin: auto;
 }
 .form {
@@ -42,6 +42,10 @@
   padding: 15px;
   box-sizing: border-box;
   font-size: 14px;
+}
+.form input[type="checkbox"] {
+  padding: 0px;
+  margin: 0px;
 }
 .form select {
     width: 100%;
@@ -116,9 +120,6 @@ input[type="checkbox"] {
 #subscriptionsView {
   margin-bottom: 20px;
 }
-/* #subscriptionsView div {
-  margin-left: -20px;
-} */
 ul {
     list-style: none;
 }
