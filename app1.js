@@ -17,14 +17,18 @@ $(document).on('change', '#Synagogue-select', function() {
     if ($('#option-other').is(':selected')) {
         $('#other-input-place').html('<input type="text" placeholder="Other Synagogue" id="otherSynagogueInput">');
     }
-})
+});
+function scrollToTop() {
+    window.scrollTo(0,0);
+    window.parent.scrollTo(0,0);
+}
 $('#Synagogue-select').change(function() {
-    console.log("Yeah");
     if ($(this).find("option:selected").attr("id") == "option-other") {
         $('#other-input-place').html('<input type="text" placeholder="Other Synagogue" id="otherSynagogueInput">');
     }
 })
 function showSubscriptionOptions() {
+    scrollToTop();
     $('#main-form').html(`
         <h4 style="width: 100%; text-align: center;">Subscription Preferences:</h4>
         <div id="subscriptionsView">
@@ -59,6 +63,7 @@ function showSubscriptionOptions() {
     });
 }
 function showLoginForm() {
+    scrollToTop();
     $('#main-form').html(`<input type="email" autocomplete="email" placeholder="email" id="email-login">
     <input type="password" autocomplete="password" placeholder="Password" id="password-login">
     <button type="button" onclick="signUserIn()">Sign In</button>
@@ -89,6 +94,7 @@ function logUserOut() {
     });
 }
 function showSignUpForm() {
+    scrollToTop();
     $('#main-form').html(`<h1 style="width: 100%; text-align: center; margin-bottom: 40px;">Sign Up</h1><input type="text" autocomplete="given-name" placeholder="First Name" id="firstName-signup"><input type="text" autocomplete="family-name" placeholder="Last Name" id="lastName-signup"><input type="email" autocomplete="email" placeholder="Email Address" id="email-signup"><input type="text" autocomplete="postal-code" placeholder="Zip Code" id="zip-signup"><input type="password" autocomplete="password" placeholder="Password" id="password-signup"><input type="password" autocomplete="password" placeholder="Confirm Password" id="confirmedPassword-signup"><select id="Synagogue-select" placeholder="Synagogue Affiliation">
         <option disabled selected>Synagogue Affiliation</option>
         <option>Ahba Ve Ahva</option>
@@ -123,6 +129,7 @@ function circle(color) {
     return `<svg width="12" height="10"><circle cx="5" cy="5" r="5" stroke="green" stroke-width="0" fill="${color}" /></svg>`;
 }
 function showUsersSubscriptionOptions() {
+    scrollToTop();
     if (firebase.auth().currentUser) {
         $('#main-form').html(`
         <div style="margin-top: 10px"><span>${circle("green")} = Content Uploaded<br>${circle("red")} = Content not loaded yet</span></div>
@@ -263,6 +270,7 @@ auth.onAuthStateChanged(function(user) {
         if (user.emailVerified) {
             showUsersSubscriptionOptions();
         } else {
+            scrollToTop();
             $('#main-form').html(`<h3>We've created your account.</h3><h4>Please verify your email address to continue.</h4><button onclick="sendVerificationEmail()">Send Verification Email</button>`);
         }
     } else {
