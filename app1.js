@@ -25,7 +25,6 @@ $('#Synagogue-select').change(function() {
     }
 })
 function showSubscriptionOptions() {
-    console.log('It is this function that is being run when you open the app');
     $('#main-form').html(`
         <h4 style="width: 100%; text-align: center;">Subscription Preferences:</h4>
         <div id="subscriptionsView">
@@ -184,6 +183,7 @@ function handleNewSignUp() {
         .catch(function(error) {
             alert(error.message);
         });
+        window.parent.postMessage("Scroll to top, wix!", null);
     }
 }
 
