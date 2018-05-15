@@ -122,9 +122,27 @@ function initializeImageUploaderView() {
                 }
             });
         });
+        database.ref('TanachLink').once('value', snapshot => {
+            var placeholder = "Tanach Weekly Study Link";
+            if (snapshot) {
+                placeholder = snapshot.val();
+            }
+        })
+        $('#FileDroperContainer').append(
+            `<div id="tanachLinkInputContainer">
+                <input type="text" placeholder="${placeholder}" id="tanachLink">
+                <button onclick="uploadTanachLink()">Upload</button>
+            </div>`
+        );
     });
 }
-
+function uploadTanachLink() {
+    if ($("#tanachLink").val() != "") {
+        database.ref('TanachLink').set($("#tanachLink").val());
+    } else {
+        alert('Tanach Link Cannot Be Empty.');
+    }
+}
 function addRemoveImgButton(gradientID) {
     const gradient = document.getElementById(gradientID);
 }
@@ -302,13 +320,6 @@ function addSubscription() {
             Category: category,
             Subscribers: 0
         });
-        database.ref('Subscribers').once('value', function(subscribers) {
-            subscribers.forEach(function(subscriber) {
-                if (subscriber) {
-                    database.ref(`Subscribers/${subscriber.key}/Subscriptions/${newSub.key}`).set(false);
-                }
-            })
-        })
         document.body.removeChild(document.getElementById('NewSubscriptionPopup'));
         initializeImageUploaderView();
         alert("Your new subscription has been saved.");
@@ -320,13 +331,6 @@ function removeSubscription(subscriptionID) {
     subscriptionID = subscriptionID.slice(0, -7);
     const desc = document.getElementById(subscriptionID).textContent;
     if (confirm(`You are about to remove ${desc} from the subscription options permanently.\nAre you sure you want to continue?`)) {
-        database.ref('Subscribers').once('value', function(subscribers) {
-            subscribers.forEach(function(subscriber) {
-                if (subscriber) {
-                    database.ref(`Subscribers/${subscriber.key}/Subscriptions/${subscriptionID}`).remove();
-                }
-            });
-        });
         database.ref(`SubcriptionOptions/${subscriptionID}`).remove();
         setTimeout(function() {
             initializeImageUploaderView();

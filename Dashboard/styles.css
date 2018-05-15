@@ -75,6 +75,19 @@ body {
     height: calc(100vh - var(--HeaderHeight));
     overflow-y: scroll;
 }
+#tanachLinkInputContainer {
+    width: calc(var(--RightSideWidth) / 2);
+    height: 150px;
+}
+#tanachLinkInputContainer * {
+    float: left;
+    margin-left: 10px;
+    margin-bottom: 50px;
+    font-size: 20px;
+}
+#tanachLinkInputContainer input{
+    width: 400px;
+}
 .left {
     left: 20px;
 }

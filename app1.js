@@ -25,7 +25,23 @@ $('#Synagogue-select').change(function() {
     }
 })
 function showSubscriptionOptions() {
-    $('#main-form').html('<h4 style="width: 100%; text-align: center;">Subscription Preferences:</h4><div id="subscriptionsView"><h3>SCA Affiliates:</h3><div id="SCA-Affiliates"></div><h3>Other Must Reads:</h3><div id="Other"></div></div><button type="button" onclick="showLoginForm()">Login</button><button type="button" onclick="showSignUpForm()">Sign Up</button>');
+    console.log('It is this function that is being run when you open the app');
+    $('#main-form').html(`
+        <h4 style="width: 100%; text-align: center;">Subscription Preferences:</h4>
+        <div id="subscriptionsView">
+            <h3>SCA Affiliates:</h3>
+            <div id="SCA-Affiliates"></div>
+            <h3>Other Must Reads:</h3>
+            <div id="Other"></div>
+            <h3>Options</h3>
+            <div id="Options">
+                <span>Include a link to this weeks tanach study from tanachstudy.com<br><br></span>
+                <span>Surprise me: Recieve one additional subscription chosen at random every week<br><br></span>
+            </div>
+        </div>
+        <button type="button" onclick="showLoginForm()">Login</button>
+        <button type="button" onclick="showSignUpForm()">Sign Up</button>
+    `);
 
     database.ref('SubcriptionOptions').once('value', function(snapshot) {
         $('#SCA-Affiliates').html("");
@@ -117,6 +133,8 @@ function showUsersSubscriptionOptions() {
             <div id="SCA-Affiliates"></div>
             <h3>Other Must Reads:</h3>
             <div id="Other"></div>
+            <h3>Options</h3>
+            <div id="Options"></div>
         </div>
         <button onclick="pushUserSubscriptionChanges()">Confirm Changes</button>
         <button onclick="sendPDFNow()">Send Content Now</button>
@@ -183,8 +201,15 @@ function subscriptionData() {
     })
     return data;
 }
+function optionsData() {
+    var data = {};
+    const inputs = document.getElementsByClassName('ExtraOption');
+    Array.prototype.forEach.call(inputs, function(option) {
+        data[option.id] = option.checked;
+    });
+    return data;
+}
 function loadUsersSubscriptions() {
-    console.log('This function ran');
     database.ref('SubcriptionOptions').on('value', function(snapshot) {
         $('#SCA-Affiliates').html('');
         $('#Other').html('');
@@ -202,25 +227,35 @@ function loadUsersSubscriptions() {
                 $('#Other').append(`<span>${circleHTML}<input type="checkbox" class="subscription" id="${child.key}">${author}: ${title}<br><br></span>`);
             }
         });
+        $('#Options').html(`
+            <span><svg width="20" height="20"></svg><input class="ExtraOption" type="checkbox" id="WantsTanach">Include a link to this weeks tanach study from tanachstudy.com<br><br></span>
+            <span><svg width="20" height="20"></svg><input class="ExtraOption" type="checkbox" id="WantsSurprise">Surprise me: Recieve one additional subscription chosen at random every week<br><br></span>
+        `)
         $('#subscriptionsView div span').css({'display': 'inline-block', 'padding-left':'45px', 'text-indent':'-45px'});
         database.ref("Users/" + firebase.auth().currentUser.uid).once('value', function(snapshot) {
             const subscriptions = snapshot.val().Subscriptions;
+            const options = snapshot.val().Options;
             if (subscriptions) {
                 const keys = Object.keys(subscriptions);
                 for (var i = 0; i < keys.length; i++) {
                     if (subscriptions[keys[i]]) {
-                        console.log(keys[i]);
                         $(`#${keys[i]}`).prop('checked', true);
                     }
                 }
             }
-        })
+            if (options) {
+                const optionKeys = Object.keys(options);
+                for (var i = 0; i < optionKeys.length; i++) {
+                    $(`#${optionKeys[i]}`).prop('checked', options[optionKeys[i]]);
+                }
+            }
+        });
     })
 }
 function pushUserSubscriptionChanges() {
     database.ref('Users/'+firebase.auth().currentUser.uid+"/Subscriptions").set(subscriptionData())
+    database.ref('Users/'+firebase.auth().currentUser.uid+'/Options').set(optionsData())
     alert('Your subscription preferences have been saved.');
-    firebase.auth().signOut().catch(function(error) {alert(error.message)})
 }
 
 auth.onAuthStateChanged(function(user) {
