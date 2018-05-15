@@ -272,7 +272,14 @@ auth.onAuthStateChanged(function(user) {
             showUsersSubscriptionOptions();
         } else {
             scrollToTop();
-            $('#main-form').html(`<h3>We've created your account.</h3><h4>Please verify your email address to continue.</h4><button onclick="sendVerificationEmail()">Send Verification Email</button>`);
+            $('#main-form').html(`
+                <h3>We've created your account.</h3>
+                <h4>Please verify your email address to continue.</h4>
+                <button onclick="sendVerificationEmail()">Send Verification Email</button>
+            `);
+            setTimeout(function() {
+                $('#main-form').append(`<p class="message">Not ${auth.currentUser.displayName}? <a onclick="logUserOut()">Log out</a></p>`);
+            }, 1000);
         }
     } else {
         showSubscriptionOptions();
