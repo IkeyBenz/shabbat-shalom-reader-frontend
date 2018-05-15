@@ -103,58 +103,32 @@ function loadStats() {
     })
 }
 function initializeImageUploaderView() {
-    const fileDropContainer = document.getElementById('FileDroperContainer');
+    $('#FileDroperContainer').html('');
     database.ref("SubcriptionOptions").once("value", function(snapshot) {
-        while (fileDropContainer.lastChild) {
-            fileDropContainer.removeChild(fileDropContainer.lastChild);
-        }
         snapshot.forEach(function(child) {
-            const imageContainer = document.createElement('div');
-            imageContainer.setAttribute('class', 'PrevImgContainer');
-            imageContainer.setAttribute('id', child.key);
-            const gradient = document.createElement('div');
+            $('#FileDroperContainer').append(
+            `<div class="PrevImgContainer" id="${child.key}">
+                <div class="TopGradient" id="${child.key}-gradient">
+                    <h2>${child.val().Author}:${child.val().Title}</h2>
+                    <input type="file" id="${child.key}-input" onchange="changeBGImg(this, '${child.key}')">
+                    <p id="${child.key}-progress"></p>
+                    <div class="ClearDiv"></div>
+                </div>
+            </div>`);
             database.ref(`SubcriptionOptions/${child.key}`).once('value', function(snapshot) {
                 if (Object.keys(snapshot.val()).includes("DownloadURL")) {
-                    const downloadURL = snapshot.val()["DownloadURL"];
-                    imageContainer.style.backgroundImage = `url(${downloadURL})`;
-                    const removeBtn = document.createElement('button');
-                    removeBtn.setAttribute('id', `${child.key}-removeButton`);
-                    removeBtn.setAttribute('onclick', `removeImageFrom('${child.key}')`);
-                    removeBtn.appendChild(document.createTextNode("Remove Image"));
-                    gradient.appendChild(removeBtn);
+                    $(`#${child.key}`).css('background-image', `url('${snapshot.val()["DownloadURL"]}')`);
+                    $(`#${child.key}-gradient`).append(`<button id="${child.key}-removeButton" onclick="removeImageFrom('${child.key}')">Remove Image</button>`);
                 }
             });
-            gradient.setAttribute('class', 'TopGradient');
-            gradient.setAttribute('id', `${child.key}-gradient`);
-            const imgInput = document.createElement('input');
-            imgInput.setAttribute('type', 'file');
-            imgInput.setAttribute('id', `${child.key}-input`);
-            imgInput.setAttribute('onchange', `changeBGImg(this, '${child.key}')`);
-            imgInput.style.float = 'left';
-            const desc = document.createElement('h2');
-            desc.appendChild(document.createTextNode(`${child.val().Author}: ${child.val().Title}`));
-            const progressIndicator = document.createElement('p');
-            progressIndicator.setAttribute('id', `${child.key}-progress`);
-            progressIndicator.style.float = 'left';
-            const clearDiv = document.createElement('div');
-            clearDiv.style.height = '10px';
-            clearDiv.style.width = '100%';
-
-            gradient.appendChild(desc);
-            gradient.appendChild(imgInput);
-            gradient.appendChild(progressIndicator);
-            gradient.appendChild(clearDiv);
-            imageContainer.appendChild(gradient);
-            fileDropContainer.appendChild(imageContainer);
-        })
-    })
+        });
+    });
 }
 
 function addRemoveImgButton(gradientID) {
     const gradient = document.getElementById(gradientID);
 }
 
-// NEW
 function removeImageFrom(imgID) {
     storage.ref(`Images/${imgID}`).delete().then(function() {
         database.ref(`SubcriptionOptions/${imgID}/DownloadURL`).remove().then(function() {
@@ -170,7 +144,6 @@ function removeImageFrom(imgID) {
         }
     });
 }
-// END NEW
 function uploadImageFrom(containerID) {
     const file = document.getElementById(`${containerID}-input`).files[0];
     var uploadTask = storage.ref('Images/').child(`${containerID}`).put(file);
@@ -188,6 +161,7 @@ function uploadImageFrom(containerID) {
     }, function() {
         document.getElementById(`${containerID}-gradient`).style.background = 'linear-gradient(rgb(152, 251, 152), rgba(152, 251, 152, 0.2))';
         document.getElementById(`${containerID}-progress`).innerHTML = "Uploaded Successfully";
+        $(`#${containerID}-gradient`).append(`<button id="${containerID}-removeButton" onclick="removeImageFrom('${containerID}')">Remove Image</button>`);
         database.ref(`SubcriptionOptions/${containerID}/DownloadURL`).set(uploadTask.snapshot.downloadURL);
     });
 }
@@ -196,16 +170,9 @@ function changeBGImg(input, imgID) {
     if (input.files && input.files[0]) {
         var reader = new FileReader();
         reader.onload = function (e) {
-            const imageContainer = document.getElementById(imgID);
-            imageContainer.style.backgroundImage = `url(${e.target.result})`;
+            $(`#${imgID}`).css('background-image', `url(${e.target.result})`);
             if (document.getElementById(`${imgID}-uploadButton`) == null) {
-                const uploadBtn = document.createElement('button');
-                uploadBtn.setAttribute('onclick', `uploadImageFrom('${imgID}')`);
-                uploadBtn.setAttribute('id', `${imgID}-uploadButton`);
-                uploadBtn.style.float = 'left';
-                uploadBtn.style.marginTop = '-6px';
-                uploadBtn.appendChild(document.createTextNode('Upload'));
-                document.getElementById(`${imgID}-gradient`).appendChild(uploadBtn);
+                $(`#${imgID}-gradient`).append(`<button id="${imgID}-uploadButton" onclick="uploadImageFrom('${imgID}')">Upload</button>`);
             }
         }
         reader.readAsDataURL(input.files[0]);
@@ -220,50 +187,17 @@ function getSubscriberKeys() {
     })
 }
 function initiateAdd() {
-    const popup = document.createElement('div');
-    popup.setAttribute('id', 'NewSubscriptionPopup');
-    const authorInput = document.createElement('input');
-    authorInput.setAttribute('id', 'authorInput');
-    authorInput.setAttribute('type', 'text');
-    authorInput.placeholder = "Author";
-    const titleInput = document.createElement('input');
-    titleInput.setAttribute('id', 'titleInput');
-    titleInput.setAttribute('type', 'text');
-    titleInput.placeholder = "Title";
-    const submitButton = document.createElement('button');
-    submitButton.setAttribute('onclick', 'addSubscription();');
-    submitButton.appendChild(document.createTextNode('Add Subscription'));
-    const categoryOtherDiv = document.createElement('div');
-    categoryOtherDiv.setAttribute('class', 'CategoryInfoContainer');
-    const categoryOtherInput = document.createElement('input');
-    categoryOtherInput.setAttribute('type', 'radio');
-    categoryOtherInput.setAttribute('value', "Other");
-    categoryOtherInput.setAttribute('name', 'Category');
-    categoryOtherInput.setAttribute('id', 'Category-Other');
-    const categoryOtherLabel = document.createElement('label');
-    categoryOtherLabel.setAttribute('for', 'Category-Other');
-    categoryOtherLabel.appendChild(document.createTextNode("Other Must Reads"));
-    categoryOtherDiv.appendChild(categoryOtherLabel);
-    categoryOtherDiv.appendChild(categoryOtherInput);
-    const categoryAffiliatesDiv = document.createElement('div');
-    categoryAffiliatesDiv.setAttribute('class', 'CategoryInfoContainer');
-    const categoryAffiliatesInput = document.createElement('input');
-    categoryAffiliatesInput.setAttribute('type', 'radio');
-    categoryAffiliatesInput.setAttribute('value', "Affiliates");
-    categoryAffiliatesInput.setAttribute('name', 'Category');
-    categoryAffiliatesInput.setAttribute('id', 'Category-Affiliates');
-    const categoryAffiliatesLabel = document.createElement('label');
-    categoryAffiliatesLabel.setAttribute('for', 'Category-Affiliates');
-    categoryAffiliatesLabel.appendChild(document.createTextNode("SCA Affiliates"));
-    categoryAffiliatesDiv.appendChild(categoryAffiliatesLabel);
-    categoryAffiliatesDiv.appendChild(categoryAffiliatesInput);
-
-    popup.appendChild(authorInput);
-    popup.appendChild(titleInput);
-    popup.appendChild(categoryOtherDiv);
-    popup.appendChild(categoryAffiliatesDiv);
-    popup.appendChild(submitButton);
-    document.body.appendChild(popup);
+    $(document.body).append(
+        `<div id="NewSubscriptionPopup">
+            <input type="text" id="authorInput" placeholder="Author">
+            <input type="text" id="titleInput" placeholder="Title">
+            <div class="CategoryInfoContainer">  
+                <input type="radio" value="Other" name="Category" id="Category-Other"> Other Must Reads<br>
+                <input type="radio" value="Affiliates" name="Category" id="Category-Affiliates">  SCA Affiliates
+            </div>
+            <button onclick="addSubscription()">Add Subscription</button>
+        </div>`
+    );
 }
 function initiateRemove() {
     const subscriptionsPanel = document.getElementById('StatsContainer').childNodes;

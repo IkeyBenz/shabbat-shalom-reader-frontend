@@ -96,6 +96,19 @@ body {
     background-position: center;
     float: left;
 }
+.TopGradient p, .TopGradient input, .TopGradient button {
+    float: left;
+}
+.TopGradient button {
+    margin-top: -6px;
+}
+.TopGradient p {
+    margin-right: 10px;
+}
+.ClearDiv {
+    height: 10px;
+    width: 100%;
+}
 .TextContainer {
     width: 80%;
     margin: 0 auto;
@@ -138,7 +151,11 @@ h2 {
     margin-top: 20px;
 }
 .CategoryInfoContainer {
-    height: 10px;
+    font-size: 16px;
+    color: white;
+}
+#NewSubscriptionPopup button {
+    margin: 0 auto;
 }
 #NewSubscriptionPopup label {
     text-align: right;
