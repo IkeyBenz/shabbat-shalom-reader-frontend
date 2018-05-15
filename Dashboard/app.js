@@ -127,18 +127,21 @@ function initializeImageUploaderView() {
             if (snapshot) {
                 placeholder = snapshot.val();
             }
-        })
-        $('#FileDroperContainer').append(
-            `<div id="tanachLinkInputContainer">
-                <input type="text" placeholder="${placeholder}" id="tanachLink">
-                <button onclick="uploadTanachLink()">Upload</button>
-            </div>`
-        );
+            $('#FileDroperContainer').append(
+                `<div id="tanachLinkInputContainer">
+                    <input type="text" placeholder="${placeholder}" id="tanachLink">
+                    <button onclick="uploadTanachLink()">Upload</button>
+                </div>`
+            );
+        });
     });
 }
 function uploadTanachLink() {
     if ($("#tanachLink").val() != "") {
         database.ref('TanachLink').set($("#tanachLink").val());
+        setTimeout(function() {
+            alert('Tanach Link Has Been Updated.');
+        }, 1000);
     } else {
         alert('Tanach Link Cannot Be Empty.');
     }

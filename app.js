@@ -99,11 +99,11 @@ function showSignUpForm() {
     scrollToTop();
     $('#main-form').html(`<h1 style="width: 100%; text-align: center; margin-bottom: 40px;">Sign Up</h1><input type="text" autocomplete="given-name" placeholder="First Name" id="firstName-signup"><input type="text" autocomplete="family-name" placeholder="Last Name" id="lastName-signup"><input type="email" autocomplete="email" placeholder="Email Address" id="email-signup"><input type="text" autocomplete="postal-code" placeholder="Zip Code" id="zip-signup"><input type="password" autocomplete="password" placeholder="Password" id="password-signup"><input type="password" autocomplete="password" placeholder="Confirm Password" id="confirmedPassword-signup"><select id="Synagogue-select" placeholder="Synagogue Affiliation">
         <option disabled selected>Synagogue Affiliation</option>
-        <option>Ahba Ve Ahva</option>
+        <option>Ahaba Ve Ahva</option>
         <option>Ave N Sephardic Congregation</option>
         <option>Bet Rachel</option>
         <option>Beth Torah</option>
-        <option>Bnei Yitzchak</option>
+        <option>Bnei Yitzhak</option>
         <option>Congregation Beth Yosef</option>
         <option>Congregation Ohel Yosef of Oakhurst</option>
         <option>Hochama U'Mussar</option>
@@ -192,7 +192,6 @@ function handleNewSignUp() {
         .catch(function(error) {
             alert(error.message);
         });
-        window.parent.postMessage("Scroll to top, wix!");
     }
 }
 
@@ -237,7 +236,7 @@ function loadUsersSubscriptions() {
             }
         });
         $('#Options').html(`
-            <span><svg width="20" height="20"></svg><input class="ExtraOption" type="checkbox" id="WantsTanach">Include a link to this weeks tanach study from tanachstudy.com<br><br></span>
+            <span><svg width="20" height="20"></svg><input class="ExtraOption" type="checkbox" id="WantsTanach">Include a link to this week's TanachStudy.com recordings<br><br></span>
             <span><svg width="20" height="20"></svg><input class="ExtraOption" type="checkbox" id="WantsSurprise">Surprise me: Recieve one additional subscription chosen at random every week<br><br></span>
         `)
         $('#subscriptionsView div span').css({'display': 'inline-block', 'padding-left':'45px', 'text-indent':'-45px'});
@@ -259,7 +258,7 @@ function loadUsersSubscriptions() {
                 }
             }
         });
-    })
+    });
 }
 function pushUserSubscriptionChanges() {
     database.ref('Users/'+firebase.auth().currentUser.uid+"/Subscriptions").set(subscriptionData())
@@ -287,87 +286,3 @@ function sendVerificationEmail() {
         alert(error.message);
     });
 }
-
-// function editSubscriptions() {
-//     const emailAddress = document.getElementById('editemail').value.toLowerCase();
-//     if (emailAddress == "") {
-//         alert("Email address field cannot be empty.");
-//     } else {
-//         database.ref("Subscribers").orderByChild("Email").equalTo(emailAddress).once("value", snapshot => {
-//             if (snapshot.val()) {
-//                 const userKey = snapshot.val()[Object.keys(snapshot.val())];
-//                 document.getElementById('email').value = emailAddress;
-//                 const zipcode = userKey.ZipCode;
-//                 const subscriptions = userKey.Subscriptions;
-//                 const subKeys = Object.keys(subscriptions);
-//                 for (var i = 0; i < subKeys.length; i++) {
-//                     document.getElementById(`${subKeys[i]}`).checked = subscriptions[subKeys[i]];
-//                 }
-//                 document.getElementById('zipcode').value = zipcode;
-//                 document.getElementById('subscribeButton').innerHTML = "Confirm Changes";
-//                 toggleForm();
-//
-//             } else {
-//                 alert('The email address entered is not registered for subscriptions.\nPlease register and then choose subscriptions.')
-//             }
-//         });
-//     }
-// }
-//
-// function pushChanges() {
-//     if (requiredFieldsAreFilledOut()) {
-//         const emailAddress = document.getElementById('email').value.toLowerCase();
-//         const zip = document.getElementById('zipcode').value;
-//         var subID = "";
-//         const newSubs = subscriptionData();
-//         // Look for subscriber with email matching the one entered
-//         database.ref("Subscribers").orderByChild("Email").equalTo(emailAddress).once("value", snapshot => {
-//             const subscriberObj = snapshot.val();
-//             // If the subscriber with specified email exists, change subID to be whatever the id is for that subscriber
-//             if (subscriberObj) {
-//                 subID = Object.keys(subscriberObj)[0].toString();
-//                 const oldSubs = subscriberObj[subID].Subscriptions;
-//                 updateDBStats(oldSubs, newSubs);
-//                 // Removes email from zip code in case it changed
-//                 database.ref(`Zipcodes/${subscriberObj[Object.keys(subscriberObj)].ZipCode}/${subID}`).remove();
-//             } else {
-//                 // Otherwise create a new subID for the subscriber
-//                 subID = database.ref("Subscribers").push().key;
-//                 addDBStats(newSubs);
-//             }
-//             database.ref(`Subscribers/${subID}`).set({
-//                 Email: emailAddress,
-//                 ZipCode: zip,
-//                 Subscriptions: newSubs
-//             });
-//             database.ref(`Zipcodes/${zip}/${subID}`).set(emailAddress);
-//             alert("Your subscription preferences have been saved.");
-//         })
-//     } else {
-//         alert("Please make sure all fields are filled out.");
-//     }
-// }
-// function updateDBStats(oldSubs, newSubs) {
-//     Object.keys(oldSubs).forEach(function(oldSubKey) {
-//         const ref = database.ref(`SubcriptionOptions/${oldSubKey}/Subscribers`);
-//         if (oldSubs[oldSubKey] == true && newSubs[oldSubKey] != true) {
-//             ref.once('value', function(snapshot) {
-//                 ref.set(snapshot.val() - 1);
-//             });
-//         } else if (oldSubs[oldSubKey] != true && newSubs[oldSubKey] == true) {
-//             ref.once('value', function(snapshot) {
-//                 ref.set(snapshot.val() + 1);
-//             });
-//         }
-//     });
-// }
-// function addDBStats(newSubs) {
-//     Object.keys(newSubs).forEach(function(newSubKey) {
-//         if (newSubs[newSubKey] == true) {
-//             const ref = database.ref(`SubcriptionOptions/${newSubKey}/Subscribers`);
-//             ref.once('value', function(snapshot) {
-//                 ref.set(snapshot.val() + 1);
-//             });
-//         }
-//     })
-// }
