@@ -20,7 +20,9 @@ $(document).on('change', '#Synagogue-select', function() {
 });
 function scrollToTop() {
     window.scrollTo(0,0);
-    window.parent.scrollTo(0,0);
+    if (window.parent) {
+        window.parent.postMessage('Scroll To Top!', "*");
+    }
 }
 $('#Synagogue-select').change(function() {
     if ($(this).find("option:selected").attr("id") == "option-other") {
