@@ -183,7 +183,7 @@ function handleNewSignUp() {
         .catch(function(error) {
             alert(error.message);
         });
-        window.parent.postMessage("Scroll to top, wix!", null);
+        window.parent.postMessage("Scroll to top, wix!");
     }
 }
 
