@@ -40,7 +40,7 @@ function showSubscriptionOptions() {
             <div id="Other"></div>
             <h3>Options</h3>
             <div id="Options">
-                <span>Include a link to this weeks tanach study from tanachstudy.com<br><br></span>
+                <span>Include a link to this week's TanachStudy.com recordings<br><br></span>
                 <span>Surprise me: Recieve one additional subscription chosen at random every week<br><br></span>
             </div>
         </div>
