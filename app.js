@@ -97,7 +97,15 @@ function logUserOut() {
 }
 function showSignUpForm() {
     scrollToTop();
-    $('#main-form').html(`<h1 style="width: 100%; text-align: center; margin-bottom: 40px;">Sign Up</h1><input type="text" autocomplete="given-name" placeholder="First Name" id="firstName-signup"><input type="text" autocomplete="family-name" placeholder="Last Name" id="lastName-signup"><input type="email" autocomplete="email" placeholder="Email Address" id="email-signup"><input type="text" autocomplete="postal-code" placeholder="Zip Code" id="zip-signup"><input type="password" autocomplete="password" placeholder="Password" id="password-signup"><input type="password" autocomplete="password" placeholder="Confirm Password" id="confirmedPassword-signup"><select id="Synagogue-select" placeholder="Synagogue Affiliation">
+    $('#main-form').html(`
+        <h1 style="width: 100%; text-align: center; margin-bottom: 40px;">Sign Up</h1>
+        <input type="text" autocomplete="given-name" placeholder="First Name" id="firstName-signup">
+        <input type="text" autocomplete="family-name" placeholder="Last Name" id="lastName-signup">
+        <input type="email" autocomplete="email" placeholder="Email Address" id="email-signup">
+        <input type="text" autocomplete="postal-code" placeholder="Zip Code" id="zip-signup">
+        <input type="password" autocomplete="password" placeholder="Password" id="password-signup">
+        <input type="password" autocomplete="password" placeholder="Confirm Password" id="confirmedPassword-signup">
+        <select id="Synagogue-select" placeholder="SCA Synagogue Affiliation">
         <option disabled selected>Synagogue Affiliation</option>
         <option>Ahaba Ve Ahva</option>
         <option>Ave N Sephardic Congregation</option>
@@ -122,10 +130,11 @@ function showSignUpForm() {
         <option>Sephardic Synagogue of Elberon</option>
         <option>Shaare Shalom</option>
         <option id="option-other">Other</option>
-    </select>
-    <div id="other-input-place"></div>
-    <button type="button" onclick="handleNewSignUp()">Submit</button>
-    <p class="message">Already have an account? <a onclick="showLoginForm()">Sign In</a></p>`);
+        </select>
+        <div id="other-input-place"></div>
+        <button type="button" onclick="handleNewSignUp()">Submit</button>
+        <p class="message">Already have an account? <a onclick="showLoginForm()">Sign In</a></p>
+    `);
 }
 function circle(color) {
     return `<svg width="12" height="10"><circle cx="5" cy="5" r="5" stroke="green" stroke-width="0" fill="${color}" /></svg>`;
