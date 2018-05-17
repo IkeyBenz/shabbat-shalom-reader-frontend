@@ -105,8 +105,8 @@ function showSignUpForm() {
         <input type="text" autocomplete="postal-code" placeholder="Zip Code" id="zip-signup">
         <input type="password" autocomplete="password" placeholder="Password" id="password-signup">
         <input type="password" autocomplete="password" placeholder="Confirm Password" id="confirmedPassword-signup">
-        <select id="Synagogue-select" placeholder="SCA Synagogue Affiliation">
-        <option disabled selected>Synagogue Affiliation</option>
+        <select id="Synagogue-select">
+        <option disabled selected>SCA Synagogue Affiliation</option>
         <option>Ahaba Ve Ahva</option>
         <option>Ave N Sephardic Congregation</option>
         <option>Bet Rachel</option>
