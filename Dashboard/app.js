@@ -27,8 +27,8 @@ firebase.auth().onAuthStateChanged(function(user) {
   if (user) {
     // User is signed in.
     var email = user.email;
-    var emailVerified = user.emailVerified;
     var uid = user.uid;
+    console.log(`${email}: ${uid}`);
     const header = document.getElementsByClassName('Header')[0];
     const profileIcon = document.getElementById('profileIcon');
     const displayName = document.createElement('p');
@@ -151,7 +151,7 @@ function addRemoveImgButton(gradientID) {
 }
 
 function removeImageFrom(imgID) {
-    storage.ref(`Images/${imgID}`).delete().then(function() {
+    storage.ref(`AdaEC9weQSeDXBkV0oGyEB9hJfd2/${imgID}`).delete().then(function() {
         database.ref(`SubcriptionOptions/${imgID}/DownloadURL`).remove().then(function() {
             initializeImageUploaderView();
         }).catch(function(error) {
@@ -167,7 +167,7 @@ function removeImageFrom(imgID) {
 }
 function uploadImageFrom(containerID) {
     const file = document.getElementById(`${containerID}-input`).files[0];
-    var uploadTask = storage.ref('Images/').child(`${containerID}`).put(file);
+    var uploadTask = storage.ref('AdaEC9weQSeDXBkV0oGyEB9hJfd2/').child(`${containerID}`).put(file);
 
     uploadTask.on('state_changed', function(snapshot) {
         var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
@@ -177,7 +177,7 @@ function uploadImageFrom(containerID) {
         if (error) {
             document.getElementById(`${containerID}-gradient`).style.background = 'linear-gradient(rgb(255, 152, 152), rgba(255, 152, 152, 0.2))';
             document.getElementById(`${containerID}-progress`).innerHTML = "Upload Failed";
-            alert(error);
+            alert(error.message);
         }
     }, function() {
         document.getElementById(`${containerID}-gradient`).style.background = 'linear-gradient(rgb(152, 251, 152), rgba(152, 251, 152, 0.2))';

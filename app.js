@@ -215,7 +215,7 @@ function subscriptionData() {
     const inputs = document.getElementsByClassName('subscription');
     Array.prototype.forEach.call(inputs, function(input) {
         data[input.id] = input.checked;
-    })
+    });
     return data;
 }
 function optionsData() {
@@ -247,7 +247,7 @@ function loadUsersSubscriptions() {
         $('#Options').html(`
             <span><svg width="20" height="20"></svg><input class="ExtraOption" type="checkbox" id="WantsTanach">Include a link to this week's TanachStudy.com recordings<br><br></span>
             <span><svg width="20" height="20"></svg><input class="ExtraOption" type="checkbox" id="WantsSurprise">Surprise me: Recieve one additional subscription chosen at random every week<br><br></span>
-        `)
+        `);
         $('#subscriptionsView div span').css({'display': 'inline-block', 'padding-left':'45px', 'text-indent':'-45px'});
         database.ref("Users/" + firebase.auth().currentUser.uid).once('value', function(snapshot) {
             const subscriptions = snapshot.val().Subscriptions;
