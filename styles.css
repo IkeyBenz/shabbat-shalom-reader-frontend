@@ -17,8 +17,11 @@
 .TextContainer h2 {
     color: white;
 }
+h3 {
+  font-size: 26px;
+}
 .login-page {
-  width: 480px;
+  width: 700px;
   padding: 20px 0 0;
   margin: auto;
 }
@@ -26,7 +29,7 @@
   position: relative;
   z-index: 1;
   background: #FFFFFF;
-  max-width: 460px;
+  max-width: 600px;
   margin: 0 auto 100px;
   padding: 45px;
   text-align: center;
@@ -41,7 +44,7 @@
   margin: 0 0 15px;
   padding: 15px;
   box-sizing: border-box;
-  font-size: 14px;
+  font-size: 24px;
 }
 .form input[type="checkbox"] {
   padding: 0px;
@@ -58,9 +61,9 @@
   background: #1665aa;
   width: 100%;
   border: 0;
-  padding: 15px;
+  padding: 20px;
   color: #FFFFFF;
-  font-size: 14px;
+  font-size: 20px;
   -webkit-transition: all 0.3 ease;
   transition: all 0.3 ease;
   cursor: pointer;
@@ -106,9 +109,12 @@ input[type="checkbox"] {
   font-weight: 300;
   color: #1a1a1a;
 }
+span {
+  font-size: 24px;
+}
 .container .info span {
   color: #4d4d4d;
-  font-size: 12px;
+  font-size: 18px;
 }
 .container .info span a {
   color: #000000;
