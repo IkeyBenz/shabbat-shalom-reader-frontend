@@ -32,7 +32,7 @@ $('#Synagogue-select').change(function() {
 function showSubscriptionOptions() {
     scrollToTop();
     $('#main-form').html(`
-        <h4 style="width: 100%; text-align: center;">Subscription Preferences:</h4>
+    <h1 style="width: 100%; text-align: center; margin-bottom: 40px;">Subscription Options:</h1>
         <div id="subscriptionsView">
             <h3>SCA Affiliates:</h3>
             <div id="SCA-Affiliates"></div>
@@ -66,7 +66,9 @@ function showSubscriptionOptions() {
 }
 function showLoginForm() {
     scrollToTop();
-    $('#main-form').html(`<input type="email" autocomplete="email" placeholder="email" id="email-login">
+    $('#main-form').html(`
+    <h1 style="width: 100%; text-align: center; margin-bottom: 40px;">Login</h1>
+    <input type="email" autocomplete="email" placeholder="email" id="email-login">
     <input type="password" autocomplete="password" placeholder="Password" id="password-login">
     <button type="button" onclick="signUserIn()">Sign In</button>
     <p class="message"> Forgot Password? <a onclick="sendPasswordReset()">Reset Password</a></p>
