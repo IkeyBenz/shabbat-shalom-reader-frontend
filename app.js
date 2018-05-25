@@ -65,6 +65,7 @@ function showSubscriptionOptions() {
     });
 }
 function showLoginForm() {
+    $('#TopSignupButton').hide();
     scrollToTop();
     $('#main-form').html(`
     <h1 style="width: 100%; text-align: center; margin-bottom: 40px;">Login</h1>
@@ -157,6 +158,11 @@ function showUsersSubscriptionOptions() {
             <div id="Options"></div>
         </div>
         <button onclick="pushUserSubscriptionChanges()">Confirm Changes</button>
+        <p>Your pdf will automatically be delivered on Fridays before noon.<br><br>
+        If you wish to receive it sooner, see the green and red indicators above.<br><br>
+        The lines that are green indicate that this week's content for that author has already been uploaded.<br>
+        The lines that are red indicate that this week's content is not available yet.<br><br>
+        If you choose to 'send content now', your pdf will contain content from green authors above.</p>
         <button onclick="sendPDFNow()">Send Content Now</button>
         <p class="message">Not ${firebase.auth().currentUser.displayName}? <a onclick="logUserOut()">Log Out</a></p>`);
         loadUsersSubscriptions();
