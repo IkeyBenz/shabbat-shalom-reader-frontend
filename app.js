@@ -99,6 +99,7 @@ function logUserOut() {
 }
 function showSignUpForm() {
     scrollToTop();
+    $('#TopSignupButton').hide();
     $('#main-form').html(`
         <h1 style="width: 100%; text-align: center; margin-bottom: 40px;">Sign Up</h1>
         <input type="text" autocomplete="given-name" placeholder="First Name" id="firstName-signup">
