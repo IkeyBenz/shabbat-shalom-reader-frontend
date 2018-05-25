@@ -30,7 +30,6 @@ $('#Synagogue-select').change(function() {
     }
 })
 function showSubscriptionOptions() {
-    scrollToTop();
     $('#main-form').html(`
     <h1 style="width: 100%; text-align: center; margin-bottom: 40px;">Subscription Options:</h1>
         <div id="subscriptionsView">
