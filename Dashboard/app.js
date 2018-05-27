@@ -153,7 +153,7 @@ function addRemoveImgButton(gradientID) {
 function removeImageFrom(imgID) {
     storage.ref(`AdaEC9weQSeDXBkV0oGyEB9hJfd2/${imgID}`).delete().then(function() {
         database.ref(`SubcriptionOptions/${imgID}/DownloadURL`).remove().then(function() {
-            initializeImageUploaderView();
+            $(`#${imgID}`).css('background-image', 'none');
         }).catch(function(error) {
             if (error) {
                 alert(error);
@@ -162,6 +162,16 @@ function removeImageFrom(imgID) {
     }).catch(function(error) {
         if (error) {
             alert(error);
+        }
+    });
+}
+
+function removeAllImages() {
+    const imageContainers = document.getElementsByClassName('PrevImgContainer');
+    Array.prototype.filter.call(imageContainers, function(imgContainer) {
+        if ($(`#${imgContainer.id}`).css('background-image') != 'none') {
+            $(`#${imgContainer.id}-removeButton`).hide();
+            removeImageFrom(imgContainer.id);
         }
     });
 }
