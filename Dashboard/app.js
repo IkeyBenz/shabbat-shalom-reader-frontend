@@ -109,7 +109,7 @@ function initializeImageUploaderView() {
             $('#FileDroperContainer').append(
             `<div class="PrevImgContainer" id="${child.key}">
                 <div class="TopGradient" id="${child.key}-gradient">
-                    <h2>${child.val().Author}:${child.val().Title}</h2>
+                    <h2>${child.val().Author}: ${child.val().Title}</h2>
                     <input type="file" id="${child.key}-input" onchange="changeBGImg(this, '${child.key}')">
                     <p id="${child.key}-progress"></p>
                     <div class="ClearDiv"></div>
