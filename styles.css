@@ -1,6 +1,6 @@
 @import url(https://fonts.googleapis.com/css?family=Roboto:300);
 
-#TopSignupButton {
+.TopButtons {
   padding: 15px;
   font-size: 16px;
   border: 2px solid white;
@@ -12,7 +12,7 @@
   cursor: pointer;
   transition: all 0.3s ease;
 }
-#TopSignupButton:hover {
+.TopButtons:hover {
   color: #1665aa;
   background: white;
 }

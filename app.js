@@ -65,6 +65,7 @@ function showSubscriptionOptions() {
 }
 function showLoginForm() {
     $('#TopSignupButton').hide();
+    $('#TopSigninButton').hide();
     scrollToTop();
     $('#main-form').html(`
     <h1 style="width: 100%; text-align: center; margin-bottom: 40px;">Login</h1>
@@ -100,6 +101,7 @@ function logUserOut() {
 function showSignUpForm() {
     scrollToTop();
     $('#TopSignupButton').hide();
+    $('#TopSigninButton').hide();
     $('#main-form').html(`
         <h1 style="width: 100%; text-align: center; margin-bottom: 40px;">Sign Up</h1>
         <input type="text" autocomplete="given-name" placeholder="First Name" id="firstName-signup">

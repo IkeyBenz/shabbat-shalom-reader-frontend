@@ -14,7 +14,11 @@
             <h2>SCA Shabbat Shalom Reader</h2> 
             <h3 style="color: white">Choose your subscription preferences below to automatically receive a personalized PDF every Friday with content from your favorite Rabbis & Community Leaders.</h3>
         </div>
-        <div class="TextContainer"><button id="TopSignupButton" onclick="showSignUpForm();">Sign Up &rarr;</button></div>
+        <div class="TextContainer" id="TopButtonsContainer">
+            <a href="mailto:?&subject=I%20Think%20You'd%20Enjoy%20This...&body=Check out the new SCA Shabbat Shalom Reader, it's awesome! https://www.scaupdates.org/Shabbatshalom"><button class="TopButtons">Invite Friends</button></a>
+            <button class="TopButtons" id="TopSignupButton" onclick="showSignUpForm();">Sign Up &rarr;</button>
+            <button class="TopButtons" id="TopSigninButton" onclick="showLoginForm();">Log In &rarr;</button>
+        </div>
         <div class="login-page">
             <div class="form">
                 <div class="register-form" id="main-form">
