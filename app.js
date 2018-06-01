@@ -167,10 +167,37 @@ function showUsersSubscriptionOptions() {
         The lines that are red indicate that this week's content is not available yet.<br><br>
         If you choose to 'send content now', your pdf will contain content from green authors above.</p>
         <button onclick="sendPDFNow()">Send Content Now</button>
-        <p class="message">Not ${firebase.auth().currentUser.displayName}? <a onclick="logUserOut()">Log Out</a></p>`);
+        <p class="message">Not ${firebase.auth().currentUser.displayName}? <a onclick="logUserOut()">Log Out</a></p>
+        <p class="message">Want to update your email address? <a onclick="showEmailResetField();">Click Here<a/>`);
+        
         loadUsersSubscriptions();
     } else {
         console.log('user is null?')
+    }
+}
+function showEmailResetField() {
+    $('#main-form').html(`
+    <h3 style="width:100%; text-align: center">Change your email address from ${firebase.auth().currentUser.email}, to:</h3>
+    <input type="text" id="newEmailForUser" placeholder="Your New Email Address">
+    <button onclick="confirmEmailReset()">Confirm</button>
+    `);
+}
+function confirmEmailReset() {
+    if ($('#newEmailForUser').val() != "") {
+        let oldEmail = firebase.auth().currentUser.email;
+        firebase.auth().currentUser.updateEmail($('#newEmailForUser').val()).then(function() {
+            database.ref('Users/'+firebase.auth().currentUser.uid).update({"Email": $('#newEmailForUser').val()});
+            alert(`Your email was succesfully changed from ${oldEmail} to ${$('#newEmailForUser').val()}`);
+            $('#main-form').html(`
+                <h3>We've updated your email.</h3>
+                <h4>Please verify your new email address to continue.</h4>
+                <button onclick="sendVerificationEmail()">Send Verification Email</button>
+            `);
+        }).catch(function(error) {
+            alert(error.message);
+        });
+    } else {
+        alert("New Email Field Can't Be Empty.");
     }
 }
 function handleNewSignUp() {
