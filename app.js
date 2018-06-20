@@ -21,7 +21,7 @@ $(document).on('change', '#Synagogue-select', function() {
 function scrollToTop() {
     window.scrollTo(0,0);
     if (window.parent) {
-        window.parent.postMessage('Scroll To Top!', "*");
+        window.parent.postMessage('Scroll', "*");
     }
 }
 $('#Synagogue-select').change(function() {
@@ -255,13 +255,18 @@ function getMyPDF() {
             if (data.slice(0, 13) == "We appologize") {
                 alert(data);
             } else {
-                if((navigator.userAgent.match(/iPhone/i)) || (navigator.userAgent.match(/iPod/i)) || (navigator.userAgent.match(/iPad/i))) {
-                    $('#downloadLink').prop('href', `data:application/pdf;base64,${data}`);
-                    $('#downloadPopup').show();
+                // if((navigator.userAgent.match(/iPhone/i)) || (navigator.userAgent.match(/iPod/i)) || (navigator.userAgent.match(/iPad/i))) {
+                //     $('#downloadLink').prop('href', `data:application/pdf;base64,${data}`);
+                //     $('#downloadPopup').show();
+                // } else {
+                //     $('body').append(`<a id="popup" href="data:application/pdf;base64,${data}" target="_blank" style="display: none;"></a>`);
+                //     $('#popup')[0].click();
+                //     $('#popup').remove();
+                // }
+                if (window.parent) {
+                    window.parent.postMessage(`data:application/pdf;base64,${data}`);
                 } else {
-                    $('body').append(`<a id="popup" href="data:application/pdf;base64,${data}" target="_blank" style="display: none;"></a>`);
-                    $('#popup')[0].click();
-                    $('#popup').remove();
+                    window.open(`data:application/pdf;base64,${data}`);
                 }
             }
         } else {
