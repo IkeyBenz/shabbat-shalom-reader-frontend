@@ -255,17 +255,7 @@ function getMyPDF() {
             if (data.slice(0, 13) == "We appologize") {
                 alert(data);
             } else {
-                // let pdf = `
-                // <object width="100%" height="100%" data="data:application/pdf;base64,${data}"type="application/pdf" class="internal">
-                //     <embed src="data:application/pdf;base64,${data}" type="application/pdf" />
-                // </object>`;
-                // let html = `<html><title>Click to download</title><body style="margin: 0px"><a href="data:application/pdf;base64,${data}" download="ShabbatShalom">${pdf}</a></body></html>`
-                $('body').append(`<a id="downloadLink" href="data:application/pdf;base64,${data}" download="ShabbatShalom" style="display: none;"></a>`);
-                // var win = window.open();
-                // win.document.write(html);
-                // win.document.close();
-                $('#downloadLink')[0].click();
-                alert('Your PDF has been downloaded.');
+                window.open(`data:application/pdf;base64,${data}`);
             }
         } else {
             alert(status);
