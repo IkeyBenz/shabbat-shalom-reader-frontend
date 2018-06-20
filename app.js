@@ -256,9 +256,8 @@ function getMyPDF() {
                 alert(data);
             } else {
                 if((navigator.userAgent.match(/iPhone/i)) || (navigator.userAgent.match(/iPod/i)) || (navigator.userAgent.match(/iPad/i))) {
-                    alert('this is an iOS device');
                     $('#downloadLink').prop('href', `data:application/pdf;base64,${data}`);
-                    $('downloadPopup').show();
+                    $('#downloadPopup').show();
                 } else {
                     $('body').append(`<a id="popup" href="data:application/pdf;base64,${data}" target="_blank" style="display: none;"></a>`);
                     $('#popup')[0].click();
