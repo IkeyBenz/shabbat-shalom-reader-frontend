@@ -130,3 +130,32 @@ body {
   margin: 0;
 }
 
+#downloadPopup {
+  display: none;
+  position: fixed;
+  top: 45vh;
+  left: 32.5vw;
+  width: 35vw;
+  height: 30vh;
+  border-radius: 15px;
+  background-color: #1665aa;
+  z-index: 100;
+}
+#pdfIcon {
+  width: 80%;
+  height: auto;
+  margin-left: 9%;
+  margin-top: 5%;
+}
+#closePDFButton {
+  position: absolute;
+  width: 50px;
+  right: -15px;
+  top: -15px;
+}
+#downloadPopup h3 {
+  color: white;
+  width: 100%;
+  text-align: center;
+  margin-top: 4px;
+}

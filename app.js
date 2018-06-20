@@ -255,15 +255,22 @@ function getMyPDF() {
             if (data.slice(0, 13) == "We appologize") {
                 alert(data);
             } else {
-                $('body').append(`<a id="popup" href="data:application/pdf;base64,${data}" target="_blank" style="display: none;"></a>`);
-                $('#popup')[0].click();
-                $('#popup').remove();
-                //window.open(`data:application/pdf;base64,${data}`);
+                if (!!navigator.platform && /iPad|iPhone|iPod/.test(navigator.platform)) {
+                    $('#downloadLink').prop('href', `data:application/pdf;base64,${data}`);
+                    $('downloadPopup').show();
+                } else {
+                    $('body').append(`<a id="popup" href="data:application/pdf;base64,${data}" target="_blank" style="display: none;"></a>`);
+                    $('#popup')[0].click();
+                    $('#popup').remove();
+                }
             }
         } else {
             alert(status);
         }
     });
+}
+function closePDFPopup() {
+    $('#downloadPopup').hide();
 }
 function subscriptionData() {
     data = {}
