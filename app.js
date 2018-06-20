@@ -166,7 +166,7 @@ function showUsersSubscriptionOptions() {
         The lines that are green indicate that this week's content for that author has already been uploaded.<br>
         The lines that are red indicate that this week's content is not available yet.<br><br>
         If you choose to 'send content now', your pdf will contain content from green authors above.</p>
-        <button onclick="sendPDFNow()">Send Content Now</button>
+        <button onclick="getMyPDF()">Download Content Now</button>
         <p class="message">Not ${firebase.auth().currentUser.displayName}? <a onclick="logUserOut()">Log Out</a></p>
         <p class="message">Want to update your email address? <a onclick="showEmailResetField();">Click Here<a/>`);
         
@@ -243,10 +243,31 @@ function handleNewSignUp() {
     }
 }
 
-function sendPDFNow() {
-    database.ref('Users/'+firebase.auth().currentUser.uid+"/Subscriptions").set(subscriptionData());
-    $.post('https://sca-email-server.herokuapp.com/onDemand', {email: auth.currentUser.email}, function (data) {
-        alert(`We're preparing your pdf. You should recieve it at ${auth.currentUser.email} shortly.`);
+// function sendPDFNow() {
+//     database.ref('Users/'+firebase.auth().currentUser.uid+"/Subscriptions").set(subscriptionData());
+//     $.post('https://sca-email-server.herokuapp.com/onDemand', {email: auth.currentUser.email}, function (data) {
+//         alert(`We're preparing your pdf. You should recieve it at ${auth.currentUser.email} shortly.`);
+//     });
+// }
+function getMyPDF() {
+    $.post('https://sca-email-server.herokuapp.com/pdfNow', {email: auth.currentUser.email}, function(data, status) {
+        if (status == "success") {
+            if (data.slice(0, 13) == "We appologize") {
+                alert(data);
+            } else {
+                let pdf = `
+                <object width="100%" height="100%" data="data:application/pdf;base64,${data}"type="application/pdf" class="internal">
+                    <embed src="data:application/pdf;base64,${data}" type="application/pdf" />
+                </object>`;
+                let html = `<html><title>Your Personalized PDF</title><body>${pdf}</body></html>`
+
+                var win = window.open();
+                win.document.write(html);
+                win.document.close();
+            }
+        } else {
+            alert(status);
+        }
     });
 }
 function subscriptionData() {
