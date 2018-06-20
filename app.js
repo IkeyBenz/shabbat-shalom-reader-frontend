@@ -256,6 +256,7 @@ function getMyPDF() {
                 alert(data);
             } else {
                 if (!!navigator.platform && /iPad|iPhone|iPod/.test(navigator.platform)) {
+                    alert('this is an iphone');
                     $('#downloadLink').prop('href', `data:application/pdf;base64,${data}`);
                     $('downloadPopup').show();
                 } else {
