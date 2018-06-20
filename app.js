@@ -255,7 +255,10 @@ function getMyPDF() {
             if (data.slice(0, 13) == "We appologize") {
                 alert(data);
             } else {
-                window.open(`data:application/pdf;base64,${data}`);
+                $('body').append(`<a id="popup" href="data:application/pdf;base64,${data}" target="_blank" style="display: none;"></a>`);
+                $('#popup')[0].click();
+                $('#popup').remove();
+                //window.open(`data:application/pdf;base64,${data}`);
             }
         } else {
             alert(status);
