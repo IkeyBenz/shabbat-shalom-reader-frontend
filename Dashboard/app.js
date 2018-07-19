@@ -27,8 +27,6 @@ firebase.auth().onAuthStateChanged(function(user) {
   if (user) {
     // User is signed in.
     var email = user.email;
-    var uid = user.uid;
-    console.log(`${email}: ${uid}`);
     const header = document.getElementsByClassName('Header')[0];
     const profileIcon = document.getElementById('profileIcon');
     const displayName = document.createElement('p');
@@ -103,7 +101,22 @@ function loadStats() {
     })
 }
 function initializeImageUploaderView() {
-    $('#FileDroperContainer').html('');
+    $('#FileDroperContainer').html(`
+    <div class="PrevImgContainer" id="PromoContent">
+        <div class="TopGradient" id="PromoContent-gradient">
+            <h2>Promotional Content</h2>
+            <input type="file" id="PromoContent-input" onchange="changeBGImg(this, 'PromoContent')">
+            <p id="PromoContent-progress"></p>
+            <div class="ClearDiv"></div>
+        </div>
+    </div>`);
+    database.ref('PromoContent').once('value', promoContent => {
+        if (promoContent.val()) {
+            console.log('this ran with promo content being ', promoContent.val());
+            $(`#PromoContent`).css('background-image', `url('${promoContent.val()}')`);
+            $(`#PromoContent-gradient`).append(`<button id="PromoContent-removeButton" onclick="removeImageFrom('PromoContent')">Remove Image</button>`);
+        }
+    });
     database.ref("SubcriptionOptions").once("value", function(snapshot) {
         snapshot.forEach(function(child) {
             $('#FileDroperContainer').append(
@@ -151,8 +164,13 @@ function addRemoveImgButton(gradientID) {
 }
 
 function removeImageFrom(imgID) {
-    storage.ref(`AdaEC9weQSeDXBkV0oGyEB9hJfd2/${imgID}`).delete().then(function() {
-        database.ref(`SubcriptionOptions/${imgID}/DownloadURL`).remove().then(function() {
+    storage.ref(`AdaEC9weQSeDXBkV0oGyEB9hJfd2/${imgID}`).delete()
+    .then(function() {
+        let dbPath = `SubcriptionOptions/${imgID}/DownloadURL`;
+        if (imgID == "PromoContent") {
+            dbPath = 'PromoContent';
+        }
+        database.ref(dbPath).remove().then(function() {
             $(`#${imgID}`).css('background-image', 'none');
         }).catch(function(error) {
             if (error) {
@@ -193,7 +211,9 @@ function uploadImageFrom(containerID) {
         document.getElementById(`${containerID}-gradient`).style.background = 'linear-gradient(rgb(152, 251, 152), rgba(152, 251, 152, 0.2))';
         document.getElementById(`${containerID}-progress`).innerHTML = "Uploaded Successfully";
         $(`#${containerID}-gradient`).append(`<button id="${containerID}-removeButton" onclick="removeImageFrom('${containerID}')">Remove Image</button>`);
-        database.ref(`SubcriptionOptions/${containerID}/DownloadURL`).set(uploadTask.snapshot.downloadURL);
+        let dbPath = `SubcriptionOptions/${containerID}/DownloadURL`;
+        if (containerID == "PromoContent") {dbPath = containerID}
+        database.ref(dbPath).set(uploadTask.snapshot.downloadURL);
     });
 }
 
@@ -209,14 +229,7 @@ function changeBGImg(input, imgID) {
         reader.readAsDataURL(input.files[0]);
     }
 }
-function getSubscriberKeys() {
-    database.ref('Subscribers').once('value', function(subscribers) {
-        subscribers.forEach(function(subscriber) {
-            console.log(subscriber.key);
 
-        })
-    })
-}
 function initiateAdd() {
     $(document.body).append(
         `<div id="NewSubscriptionPopup">
