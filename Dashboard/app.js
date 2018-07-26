@@ -35,9 +35,9 @@ firebase.auth().onAuthStateChanged(function(user) {
     displayName.style.color = 'white';
     header.appendChild(displayName);
     hl();
+    updateSubscriptionsStatistics();
     lggdIn = true;
     setTimeout(function () {
-        console.log(displayName.offsetWidth);
         profileIcon.style.right = `${displayName.offsetWidth + 30}px`;
     }, 500)
   } else {
@@ -86,6 +86,45 @@ function toggleStatsBar() {
 
     return false;
 }
+async function updateSubscriptionsStatistics(users) {
+    var subscriptionCount = await new Promise(function(resolve, reject) {
+        subCount = {};
+        database.ref('SubcriptionOptions').once('value', function(subscriptions) {
+            subscriptions.forEach(function(subscription) {
+                subCount[subscription.key] = 0;
+                console.log(subscription.key);
+            });
+            resolve(subCount);
+        });
+    });
+    var userSubs = [];
+    var users = await new Promise(function(resolve,reject) {
+        var subscribers = [];
+        database.ref('Users').once('value', snapshot => {
+            Object.keys(snapshot.val()).forEach(function(key) {
+                subscribers.push(snapshot.val()[key]);
+            });
+            resolve(subscribers);
+        });
+    });
+    for (let user of users) {
+        if (user.Subscriptions) {
+            userSubs.push(user.Subscriptions);
+        }
+    }
+    for (var i = 0; i < userSubs.length; i++) {
+        Object.keys(userSubs[i]).forEach(function(subscriptionKey) {
+            if (userSubs[i][subscriptionKey] && Object.keys(subscriptionCount).includes(subscriptionKey)) {
+                subscriptionCount[subscriptionKey] += 1;
+            }
+        });
+    }
+    Object.keys(subscriptionCount).forEach(function(subscriptionKey) {
+        database.ref(`SubcriptionOptions/${subscriptionKey}/Subscribers`).set(subscriptionCount[subscriptionKey]);
+    });
+    setTimeout(loadStats, 3000);
+    
+}
 function loadStats() {
     database.ref("SubcriptionOptions").on("value", function(snapshot) {
         const statisticsContainer = document.getElementById('StatsContainer');
@@ -112,7 +151,6 @@ function initializeImageUploaderView() {
     </div>`);
     database.ref('PromoContent').once('value', promoContent => {
         if (promoContent.val()) {
-            console.log('this ran with promo content being ', promoContent.val());
             $(`#PromoContent`).css('background-image', `url('${promoContent.val()}')`);
             $(`#PromoContent-gradient`).append(`<button id="PromoContent-removeButton" onclick="removeImageFrom('PromoContent')">Remove Image</button>`);
         }
@@ -187,7 +225,7 @@ function removeImageFrom(imgID) {
 function removeAllImages() {
     const imageContainers = document.getElementsByClassName('PrevImgContainer');
     Array.prototype.filter.call(imageContainers, function(imgContainer) {
-        if ($(`#${imgContainer.id}`).css('background-image') != 'none') {
+        if (imgcontainer.id != "PromoContent" && $(`#${imgContainer.id}`).css('background-image') != 'none') {
             $(`#${imgContainer.id}-removeButton`).hide();
             removeImageFrom(imgContainer.id);
         }
@@ -229,7 +267,6 @@ function changeBGImg(input, imgID) {
         reader.readAsDataURL(input.files[0]);
     }
 }
-
 function initiateAdd() {
     $(document.body).append(
         `<div id="NewSubscriptionPopup">
