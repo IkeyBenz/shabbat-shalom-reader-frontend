@@ -174,12 +174,12 @@ function removeImageFrom(imgID) {
             $(`#${imgID}`).css('background-image', 'none');
         }).catch(function(error) {
             if (error) {
-                alert(error);
+                alert(error.message);
             }
         });
     }).catch(function(error) {
         if (error) {
-            alert(error);
+            alert(error.message);
         }
     });
 }
