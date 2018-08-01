@@ -129,7 +129,7 @@ function showSignUpForm() {
         <option>Manhattan East Synagogue - Congregation Shaare Mizrah</option>
         <option>Mikdash Eliyahu</option>
         <option>Ohel David and Shlomo Congregation of Manhattan Beach</option>
-        <option>Ohel Yishak of Allenhusrt</option>
+        <option>Ohel Yishak of Allenhurst</option>
         <option>Edmond J. Safra Synagogue of Deal</option>
         <option>Edmond J. Safra Synagogue of Manhattan</option>
         <option>Edmond J. Safra Synagogue of Turnberry</option>

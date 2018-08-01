@@ -1,0 +1,45 @@
+<!DOCTYPE=html>
+<html>
+    <head>
+		<title>Author Login</title>
+		<meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<link rel="stylesheet" href="login.css">
+		<script src="https://www.gstatic.com/firebasejs/5.2.0/firebase.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script src="login.js"></script>
+    </head>
+    <body>
+		<header>
+			<img src="../Images/SCALogo.jpg" alt="">
+		</header>
+		<div class="login-container" id="LoginView">
+			<div class="app-title top">
+				<h1>SCA Shabbat Shalom Authors</h1>
+			</div>
+			<div class="login">
+				<div class="login-screen">
+					
+					<div class="app-title">
+						<h1>Login</h1>
+					</div>
+
+					<div class="login-form">
+						<div class="control-group">
+						<input type="text" class="login-field" value="" placeholder="email" id="login-email">
+						<label class="login-field-icon fui-user" for="login-name"></label>
+						</div>
+
+						<div class="control-group">
+						<input type="password" class="login-field" value="" placeholder="password" id="login-pass">
+						<label class="login-field-icon fui-lock" for="login-pass"></label>
+						</div>
+
+						<a class="btn btn-primary btn-large btn-block" href="#" onclick="login();">login</a>
+						<p class="forgotPassword">Forgot Password? <a href="#" onclick="sendPasswordReset()">Reset Password</a></p>
+					</div>
+				</div>
+			</div>
+		</div>
+    </body>
+</html>
