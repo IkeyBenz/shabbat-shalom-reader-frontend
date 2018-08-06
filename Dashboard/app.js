@@ -202,7 +202,7 @@ function addRemoveImgButton(gradientID) {
 }
 
 function removeImageFrom(imgID) {
-    storage.ref(`AdaEC9weQSeDXBkV0oGyEB9hJfd2/${imgID}`).delete()
+    storage.ref(`PDFs/${imgID}`).delete()
     .then(function() {
         let dbPath = `SubcriptionOptions/${imgID}/DownloadURL`;
         if (imgID == "PromoContent") {
@@ -233,7 +233,7 @@ function removeAllImages() {
 }
 function uploadImageFrom(containerID) {
     const file = document.getElementById(`${containerID}-input`).files[0];
-    var uploadTask = storage.ref('AdaEC9weQSeDXBkV0oGyEB9hJfd2/').child(`${containerID}`).put(file);
+    var uploadTask = storage.ref('PDFs/').child(`${containerID}`).put(file);
 
     uploadTask.on('state_changed', function(snapshot) {
         var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;

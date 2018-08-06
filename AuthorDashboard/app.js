@@ -14,7 +14,7 @@ var auth = firebase.auth();
 
 $(document).ready(function() {
     $('#fileInput').on('change', changeBGImg);
-    // $('#uploadButton').on('click', uploadPDF);
+    $('#uploadButton').on('click', uploadPDF);
     $('#removeButton').on('click', removePDF);
 });
 
@@ -50,7 +50,6 @@ function uploadPDF() {
         $('#ProgressStatus').text('Uploaded Successfully');
         $('#removeButton').show();
         uploadTask.snapshot.ref.getDownloadURL().then(function(url) {
-            console.log(url);
             database.ref(`SubcriptionOptions/${auth.currentUser.uid}/DownloadURL`).set(url);
         });
     });
@@ -76,7 +75,7 @@ function loadStuff() {
     database.ref('SubcriptionOptions/' + auth.currentUser.uid).once('value', snapshot => {
         let val = snapshot.val();
         if (Object.keys(val).includes('DownloadURL')) {
-            $('#.PrevImg').css('background-image', `url('${val.DownloadURL}')`);
+            $('.PrevImg').css('background-image', `url('${val.DownloadURL}')`);
             $('#removeButton').show();
         }
     });
