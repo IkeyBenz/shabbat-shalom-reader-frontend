@@ -60,7 +60,7 @@ function removePDF() {
         database.ref(`SubcriptionOptions/${auth.currentUser.uid}/DownloadURL`).remove()
         .then(() => {
             $('.PrevImg').css('background-image', 'none');
-            $('#progressStatus').text('');
+            $('.ProgressStatus').text('');
             $('.TopGradient').css('background', 'linear-gradient(rgba(0,0,0, 0.5), rgb(255,255,255))');
             $('#removeButton').hide();
         }).catch(error => {
