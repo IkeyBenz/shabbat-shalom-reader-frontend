@@ -271,7 +271,8 @@ function getMyPDF() {
                         // $('#popup')[0].click();
                         // $('#popup').remove();
                     } else {
-                        window.parent.postMessage(`data:application/pdf;base64,${data}`, "*");
+                        //window.parent.postMessage(`data:application/pdf;base64,${data}`, "*");
+                        window.open(`data:application/pdf;base64,${data}`, '_blank');
                     }
                 }
                 
