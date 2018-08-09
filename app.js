@@ -260,21 +260,29 @@ function getMyPDF() {
                 console.log('Appology');
                 alert(data);
             } else {
-                if((navigator.userAgent.match(/iPhone/i)) || (navigator.userAgent.match(/iPod/i)) || (navigator.userAgent.match(/iPad/i))) {
-                    $('#downloadLink').prop('href', `data:application/pdf;base64,${data}`);
-                    $('#downloadPopup').show();
-                } else {
-                    if (self == top) {
-                        alert("If you're using Google Chrome or have popup blocking software on your browser, you may need to disable the popup-blocker for this website in order to view your pdf.");
-                        window.open(`data:application/pdf;base64,${data}`, '_blank');
-                        // $('body').append(`<a id="popup" href="data:application/pdf;base64,${data}" target="_blank" style="display: none;"></a>`);
-                        // $('#popup')[0].click();
-                        // $('#popup').remove();
-                    } else {
-                        //window.parent.postMessage(`data:application/pdf;base64,${data}`, "*");
-                        window.open(`data:application/pdf;base64,${data}`, '_blank');
-                    }
-                }
+                let link = document.createElement('a');
+                link.href = `data:application/pdf;base64,${data}`;
+                link.download = "ShabbatShalom.pdf";
+                link.click();
+                // $('#downloadLink').prop('href', `data:application/pdf;base64,${data}`);
+                // console.log(data.slice(0,20));
+                // $('#downloadLink').on('click', function(){window.open(`data:application/pdf;base64,${data}`, '_blank')});
+                // $('#downloadPopup').show();
+                // if((navigator.userAgent.match(/iPhone/i)) || (navigator.userAgent.match(/iPod/i)) || (navigator.userAgent.match(/iPad/i))) {
+                //     $('#downloadLink').prop('href', `data:application/pdf;base64,${data}`);
+                //     $('#downloadPopup').show();
+                // } else {
+                //     if (self == top) {
+                //         alert("If you're using Google Chrome or have popup blocking software on your browser, you may need to disable the popup-blocker for this website in order to view your pdf.");
+                //         window.open(`data:application/pdf;base64,${data}`, '_blank');
+                //         // $('body').append(`<a id="popup" href="data:application/pdf;base64,${data}" target="_blank" style="display: none;"></a>`);
+                //         // $('#popup')[0].click();
+                //         // $('#popup').remove();
+                //     } else {
+                //         //window.parent.postMessage(`data:application/pdf;base64,${data}`, "*");
+                //         window.open(`data:application/pdf;base64,${data}`, '_blank');
+                //     }
+                // }
                 
             }
         } else {
