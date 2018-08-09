@@ -260,13 +260,14 @@ function getMyPDF() {
                 console.log('Appology');
                 alert(data);
             } else {
-                // let link = document.createElement('a');
-                // link.href = `https://sca-email-server.herokuapp.com/merged`;
-                // link.click();
+                let link = document.createElement('a');
+                link.href = `https://sca-email-server.herokuapp.com/merged`;
+                link.download = "ShabbatShalom.pdf";
+                link.click();
                 // $('#downloadLink').prop('href', `data:application/pdf;base64,${data}`);
                 // console.log(data.slice(0,20));
                 // $('#downloadLink').on('click', function(){window.open(`data:application/pdf;base64,${data}`, '_blank')});
-                $('#downloadPopup').show();
+                //$('#downloadPopup').show();
                 // if((navigator.userAgent.match(/iPhone/i)) || (navigator.userAgent.match(/iPod/i)) || (navigator.userAgent.match(/iPad/i))) {
                 //     $('#downloadLink').prop('href', `data:application/pdf;base64,${data}`);
                 //     $('#downloadPopup').show();
