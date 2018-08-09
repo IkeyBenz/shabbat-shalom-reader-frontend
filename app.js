@@ -250,25 +250,31 @@ function handleNewSignUp() {
 //     });
 // }
 function getMyPDF() {
+    showSpinner();
     $.post('https://sca-email-server.herokuapp.com/pdfNow', {email: auth.currentUser.email}, function(data, status) {
+        $('#loadingWidget').hide();
+        $('#overlay').hide();
         if (status == "success") {
+            console.log('sucess');
             if (data.slice(0, 13) == "We appologize") {
+                console.log('Appology');
                 alert(data);
             } else {
                 if((navigator.userAgent.match(/iPhone/i)) || (navigator.userAgent.match(/iPod/i)) || (navigator.userAgent.match(/iPad/i))) {
                     $('#downloadLink').prop('href', `data:application/pdf;base64,${data}`);
                     $('#downloadPopup').show();
-                    //window.location = `data:application/pdf;base64,${data}`;
                 } else {
-                    $('body').append(`<a id="popup" href="data:application/pdf;base64,${data}" target="_blank" style="display: none;"></a>`);
-                    $('#popup')[0].click();
-                    $('#popup').remove();
+                    if (self == top) {
+                        alert("If you're using Google Chrome or have popup blocking software on your browser, you may need to disable the popup-blocker for this website in order to view your pdf.");
+                        window.open(`data:application/pdf;base64,${data}`, '_blank');
+                        // $('body').append(`<a id="popup" href="data:application/pdf;base64,${data}" target="_blank" style="display: none;"></a>`);
+                        // $('#popup')[0].click();
+                        // $('#popup').remove();
+                    } else {
+                        window.parent.postMessage(`data:application/pdf;base64,${data}`, "*");
+                    }
                 }
-                // if (window.parent) {
-                //     window.parent.postMessage(`data:application/pdf;base64,${data}`, "*");
-                // } else {
-                //     window.open(`data:application/pdf;base64,${data}`);
-                // }
+                
             }
         } else {
             alert(status);
@@ -369,4 +375,8 @@ function sendVerificationEmail() {
     }).catch(function(error) {
         alert(error.message);
     });
+}
+function showSpinner() {
+    $('#loadingWidget').css('display', 'flex');
+    document.getElementById('overlay').style.display = 'block';
 }

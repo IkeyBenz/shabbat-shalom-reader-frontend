@@ -159,3 +159,71 @@ body {
   text-align: center;
   margin-top: 4px;
 }
+
+#loadingWidget {
+  position: fixed;
+  width: 250px;
+  top: calc(40vh - 40px);
+  left: calc(50vw - 145px);
+  padding: 30px 20px;
+  background-color: #fff;
+  border-radius: 10px;
+  display: flex;
+  justify-content: space-around;
+  z-index: 1000;
+  display: none;
+}
+#loadingWidget h1 {
+  line-height: 0px;
+}
+#spinner {
+  display: inline-flex;
+  width: 30px;
+  height: 30px;
+}
+#overlay {
+  z-index: 990;
+  position: fixed;
+  background-color: rgba(0,0,0,0.4);
+  top: 0px;
+  width: 100vw;
+  height: 100vh;
+  display: none;
+  transition: all 0.3s ease-in-out;
+}
+
+@-webkit-keyframes rotating /* Safari and Chrome */ {
+  from {
+    -webkit-transform: rotate(0deg);
+    -o-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  to {
+    -webkit-transform: rotate(360deg);
+    -o-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+@keyframes rotating {
+  from {
+    -ms-transform: rotate(0deg);
+    -moz-transform: rotate(0deg);
+    -webkit-transform: rotate(0deg);
+    -o-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  to {
+    -ms-transform: rotate(360deg);
+    -moz-transform: rotate(360deg);
+    -webkit-transform: rotate(360deg);
+    -o-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+.rotating {
+  -webkit-animation: rotating 1s linear infinite;
+  -moz-animation: rotating 1s linear infinite;
+  -ms-animation: rotating 1s linear infinite;
+  -o-animation: rotating 1s linear infinite;
+  animation: rotating 1s linear infinite;
+}
