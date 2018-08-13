@@ -225,7 +225,7 @@ function removeImageFrom(imgID) {
 function removeAllImages() {
     const imageContainers = document.getElementsByClassName('PrevImgContainer');
     Array.prototype.filter.call(imageContainers, function(imgContainer) {
-        if (imgcontainer.id != "PromoContent" && $(`#${imgContainer.id}`).css('background-image') != 'none') {
+        if (imgContainer.id != "PromoContent" && $(`#${imgContainer.id}`).css('background-image') != 'none') {
             $(`#${imgContainer.id}-removeButton`).hide();
             removeImageFrom(imgContainer.id);
         }
