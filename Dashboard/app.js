@@ -14,7 +14,6 @@ function preloadStuff() {
     setTimeout(function() {
         initializeImageUploaderView();
         toggleStatsBar();
-        toggleStatsBar();
     }, 1000);
 }
 
@@ -289,65 +288,32 @@ function initiateRemove() {
         subscription.appendChild(checkbox);
     })
 }
-function initiateReschedule() {
-    const popup = document.createElement('div');
-    popup.setAttribute('id', 'ReschedulePopup');
-
-    const heading = document.createElement('h3');
-    database.ref('ScheduleTime').once('value', function(snapshot) {
-        const day = snapshot.val().Day;
-        const hour = snapshot.val().Hour;
-        const minute = snapshot.val().Minute;
-        heading.appendChild(document.createTextNode(`The blast is scheduled for ${day}, at ${hour}:${minute}. Please enter the time you'd like to reschedule it for.`));
-    });
-    const dayInfo = document.createElement('span');
-    dayInfo.appendChild(document.createTextNode("Day: "));
-    const dayTF = document.createElement('input');
-    dayTF.setAttribute('type', 'text');
-    dayTF.setAttribute('id', 'reschedule-day');
-    dayInfo.appendChild(dayTF);
-
-    const hourInfo = document.createElement('span');
-    hourInfo.appendChild(document.createTextNode('Hour: '));
-    const hourTF = document.createElement('input');
-    hourTF.setAttribute('type', 'text');
-    hourTF.setAttribute('id', 'reschedule-hour');
-    hourInfo.appendChild(hourTF);
-
-    const minuteInfo = document.createElement('span');
-    minuteInfo.appendChild(document.createTextNode("Minute: "));
-    const minuteTF = document.createElement('input');
-    minuteTF.setAttribute('type', 'text');
-    minuteTF.setAttribute('id', 'reschedule-minute');
-    minuteInfo.appendChild(minuteTF);
-
-    const submitButton = document.createElement('button');
-    submitButton.appendChild(document.createTextNode('Submit'));
-    submitButton.setAttribute('onclick', 'reschedule()');
-
-    const cancelButton = document.createElement('button');
-    cancelButton.appendChild(document.createTextNode('Cancel'));
-    cancelButton.setAttribute('onclick', 'cancelReschedule();');
-
-    const buttonContainer = document.createElement('div');
-    buttonContainer.appendChild(submitButton);
-    buttonContainer.appendChild(cancelButton);
-
-    popup.appendChild(heading);
-    popup.appendChild(dayInfo);
-    popup.appendChild(hourInfo);
-    popup.appendChild(minuteInfo);
-    popup.appendChild(buttonContainer);
-
-    document.body.appendChild(popup);
+async function initiateReschedule() {
+    let heading = ""
+    let currentTime = await database.ref('ScheduleTime').once('value');
+    let val = currentTime.val(); 
+    heading = `The blast is scheduled for ${val.Day}, at ${val.Hour}:${val.Minute}. Please enter the time you'd like to reschedule it for.`;
+    let popup = `
+        <div id="ReschedulePopup">
+            <h3>${heading}</h3>
+            <span>Day: <input type="text" id="reschedule-day"></span>
+            <span>Hour: (24hr Scale) <input type="text" id="reschedule-hour"></span>
+            <span>Minute: <input type="text" id="reschedule-minute"></span>
+            <div>
+                <button onclick="reschedule()">Submit</button>
+                <button onclick="cancelReschedule()">Cancel</button>
+            </div>
+        </div>
+    `;
+    $('body').append(popup);
 }
 function cancelReschedule() {
     document.getElementById('ReschedulePopup').style.display = 'none';
 }
 function reschedule() {
-    const day = document.getElementById('reschedule-day').value;
-    const hour = document.getElementById('reschedule-hour').value;
-    const minute = document.getElementById('reschedule-minute').value;
+    const day = $('#reschedule-day').val();
+    const hour =  $('#reschedule-hour').val();
+    const minute = $('#reschedule-minute').val();
     const validDays = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
     if (!validDays.includes(day)) {
         alert(`Invalid day entered.\nPlease format the day as the ones in this list:\n${validDays}`);

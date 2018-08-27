@@ -5,9 +5,17 @@
     --ThemeColor: #0B4877;
 }
 body {
-    margin: 0 0;
+    margin: 0;
     height: 100vh;
     font-family: sans-serif;
+}
+header {
+    height: 100px;
+    width: 100%;
+}
+main {
+    position: relative;
+    width: 100%;
 }
 .login-container {
     position: fixed;
