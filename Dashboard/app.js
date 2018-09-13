@@ -20,83 +20,36 @@ function preloadStuff() {
 var database = firebase.database();
 var storage = firebase.storage();
 
-var lggdIn = false;
-
 firebase.auth().onAuthStateChanged(function(user) {
-  if (user) {
-    // User is signed in.
-    var email = user.email;
-    const header = document.getElementsByClassName('Header')[0];
-    const profileIcon = document.getElementById('profileIcon');
-    const displayName = document.createElement('p');
-    displayName.innerHTML = email;
-    displayName.className = 'icon right';
-    displayName.style.color = 'white';
-    header.appendChild(displayName);
-    hl();
-    updateSubscriptionsStatistics();
-    lggdIn = true;
-    setTimeout(function () {
-        profileIcon.style.right = `${displayName.offsetWidth + 30}px`;
-    }, 500)
-  } else {
-    sl();
-    lggdIn = false;
-  }
-});
-function hl() {
-    const overlay = document.getElementById('Overlay');
-    const loginView = document.getElementById('LoginView');
-    overlay.style.display = 'none';
-    loginView.style.display = 'none';
-}
-function sl() {
-    const overlay = document.getElementById('Overlay');
-    const loginView = document.getElementById('LoginView');
-    overlay.style.display = 'block';
-    loginView.style.display = 'block';
-}
-function login() {
-    const email = document.getElementById('login-email').value;
-    const password = document.getElementById('login-pass').value;
-    var successful = true;
-    if (email != "" && password != "") {
-        firebase.auth().signInWithEmailAndPassword(email, password).catch(function(error) {
-          var errorCode = error.code;
-          var errorMessage = error.message;
-          alert(`${errorCode}\n\n${errorMessage}`);
-        });
+    if (user) {
+        let displayName = $(`<p class="icon right" style="color:white;">${user.email}</p>`);
+        $('.Header').append(`<p class="icon right" style="color:white;">${user.email}</p>`);
+        updateSubscriptionsStatistics();
+        setTimeout(function () {
+            profileIcon.style.right = `${$(displayName).offsetWidth + 30}px`;
+        }, 500)
     } else {
-        alert('Please make sure all fields are filled out properly.');
+        window.location.replace('./Login/');
     }
-}
+});
+
 
 function toggleStatsBar() {
-    if (lggdIn) {
-        if (document.getElementById('StatsBar').style.display == "none") {
-            loadStats();
-            document.documentElement.style.setProperty('--StatsWidth', '300px');
-            document.getElementById('StatsBar').style.display = "block";
-        } else {
-            document.documentElement.style.setProperty('--StatsWidth', '0px');
-            document.getElementById('StatsBar').style.display = "none";
-        }
+    if (document.getElementById('StatsBar').style.display == "none") {
+        loadStats();
+        document.documentElement.style.setProperty('--StatsWidth', '300px');
+        document.getElementById('StatsBar').style.display = "block";
+    } else {
+        document.documentElement.style.setProperty('--StatsWidth', '0px');
+        document.getElementById('StatsBar').style.display = "none";
     }
-
-    return false;
 }
 async function updateSubscriptionsStatistics(users) {
-    var subscriptionCount = await new Promise(function(resolve, reject) {
-        subCount = {};
-        database.ref('SubcriptionOptions').once('value', function(subscriptions) {
-            subscriptions.forEach(function(subscription) {
-                subCount[subscription.key] = 0;
-                console.log(subscription.key);
-            });
-            resolve(subCount);
-        });
-    });
-    var userSubs = [];
+    let snapshot = await database.ref('SubcriptionOptions').once('value');
+    let subscriptionCount = {}
+    for (let key of Object.keys(snapshot.val())) {
+        subscriptionCount[key] = 0;
+    }
     var users = await new Promise(function(resolve,reject) {
         var subscribers = [];
         database.ref('Users').once('value', snapshot => {
@@ -106,6 +59,7 @@ async function updateSubscriptionsStatistics(users) {
             resolve(subscribers);
         });
     });
+    var userSubs = [];
     for (let user of users) {
         if (user.Subscriptions) {
             userSubs.push(user.Subscriptions);
@@ -122,7 +76,6 @@ async function updateSubscriptionsStatistics(users) {
         database.ref(`SubcriptionOptions/${subscriptionKey}/Subscribers`).set(subscriptionCount[subscriptionKey]);
     });
     setTimeout(loadStats, 3000);
-    
 }
 function loadStats() {
     database.ref("SubcriptionOptions").on("value", function(snapshot) {
@@ -139,32 +92,27 @@ function loadStats() {
     })
 }
 function initializeImageUploaderView() {
-    $('#FileDroperContainer').html(`
-    <div class="PrevImgContainer" id="PromoContent">
-        <div class="TopGradient" id="PromoContent-gradient">
-            <h2>Promotional Content</h2>
-            <input type="file" id="PromoContent-input" onchange="changeBGImg(this, 'PromoContent')">
-            <p id="PromoContent-progress"></p>
-            <div class="ClearDiv"></div>
-        </div>
-    </div>`);
+    let promoHtml = getFileDropperHTML('Promotional Content', 'PromoContent');
+    $('#FileDroperContainer').html(promoHtml);
     database.ref('PromoContent').once('value', promoContent => {
         if (promoContent.val()) {
             $(`#PromoContent`).css('background-image', `url('${promoContent.val()}')`);
             $(`#PromoContent-gradient`).append(`<button id="PromoContent-removeButton" onclick="removeImageFrom('PromoContent')">Remove Image</button>`);
         }
     });
+    let frontCoverHtml = getFileDropperHTML('Front Cover', 'FrontCover');
+    $('#FileDroperContainer').append(frontCoverHtml);
+    database.ref('FrontCover').once('value', frontCover => {
+        if (frontCover.val()) {
+            $(`#FrontCover`).css('background-image', `url('${frontCover.val()}')`);
+            $(`#FrontCover-gradient`).append(`<button id="FrontCover-removeButton" onclick="removeImageFrom('FrontCover')">Remove Image</button>`);
+        }
+    });
     database.ref("SubcriptionOptions").once("value", function(snapshot) {
         snapshot.forEach(function(child) {
-            $('#FileDroperContainer').append(
-            `<div class="PrevImgContainer" id="${child.key}">
-                <div class="TopGradient" id="${child.key}-gradient">
-                    <h2>${child.val().Author}: ${child.val().Title}</h2>
-                    <input type="file" id="${child.key}-input" onchange="changeBGImg(this, '${child.key}')">
-                    <p id="${child.key}-progress"></p>
-                    <div class="ClearDiv"></div>
-                </div>
-            </div>`);
+            let title = `${child.val().Author}: ${child.val().Title}`
+            let html = getFileDropperHTML(title, child.key);
+            $('#FileDroperContainer').append(html);
             database.ref(`SubcriptionOptions/${child.key}`).once('value', function(snapshot) {
                 if (Object.keys(snapshot.val()).includes("DownloadURL")) {
                     $(`#${child.key}`).css('background-image', `url('${snapshot.val()["DownloadURL"]}')`);
@@ -185,6 +133,16 @@ function initializeImageUploaderView() {
             );
         });
     });
+}
+function getFileDropperHTML(title, key) {
+    return `<div class="PrevImgContainer" id="${key}">
+        <div class="TopGradient" id="${key}-gradient">
+            <h2>${title}</h2>
+            <input type="file" id="${key}-input" onchange="changeBGImg(this, '${key}')">
+            <p id="${key}-progress"></p>
+            <div class="ClearDiv"></div>
+        </div>
+    </div>`
 }
 function uploadTanachLink() {
     if ($("#tanachLink").val() != "") {
@@ -249,7 +207,7 @@ function uploadImageFrom(containerID) {
         document.getElementById(`${containerID}-progress`).innerHTML = "Uploaded Successfully";
         $(`#${containerID}-gradient`).append(`<button id="${containerID}-removeButton" onclick="removeImageFrom('${containerID}')">Remove Image</button>`);
         let dbPath = `SubcriptionOptions/${containerID}/DownloadURL`;
-        if (containerID == "PromoContent") {dbPath = containerID}
+        if (containerID == "PromoContent" || containerID == "FrontCover") {dbPath = containerID}
         database.ref(dbPath).set(uploadTask.snapshot.downloadURL);
     });
 }
