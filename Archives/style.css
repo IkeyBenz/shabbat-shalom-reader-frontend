@@ -39,4 +39,8 @@ main {
 a {
     color: black;
 }
+label {
+    margin: 10px;
+    color: white;
+}
 
