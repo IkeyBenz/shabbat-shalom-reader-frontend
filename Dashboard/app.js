@@ -1,17 +1,17 @@
 var config = {
-  apiKey: "AIzaSyAFYRr1vyPOAx1DU7AMziYGObpZsO1KJkE",
-  authDomain: "sca-subscriptions.firebaseapp.com",
-  databaseURL: "https://sca-subscriptions.firebaseio.com",
-  projectId: "sca-subscriptions",
-  storageBucket: "sca-subscriptions.appspot.com",
-  messagingSenderId: "1082275540488"
+    apiKey: "AIzaSyAFYRr1vyPOAx1DU7AMziYGObpZsO1KJkE",
+    authDomain: "sca-subscriptions.firebaseapp.com",
+    databaseURL: "https://sca-subscriptions.firebaseio.com",
+    projectId: "sca-subscriptions",
+    storageBucket: "sca-subscriptions.appspot.com",
+    messagingSenderId: "1082275540488"
 };
 
 firebase.initializeApp(config);
 document.onload = preloadStuff();
 
 function preloadStuff() {
-    setTimeout(function() {
+    setTimeout(function () {
         initializeImageUploaderView();
         toggleStatsBar();
     }, 1000);
@@ -20,7 +20,7 @@ function preloadStuff() {
 var database = firebase.database();
 var storage = firebase.storage();
 
-firebase.auth().onAuthStateChanged(function(user) {
+firebase.auth().onAuthStateChanged(function (user) {
     if (user) {
         let displayName = $(`<p class="icon right" style="color:white;">${user.email}</p>`);
         $('.Header').append(`<p class="icon right" style="color:white;">${user.email}</p>`);
@@ -50,10 +50,10 @@ async function updateSubscriptionsStatistics(users) {
     for (let key of Object.keys(snapshot.val())) {
         subscriptionCount[key] = 0;
     }
-    var users = await new Promise(function(resolve,reject) {
+    var users = await new Promise(function (resolve, reject) {
         var subscribers = [];
         database.ref('Users').once('value', snapshot => {
-            Object.keys(snapshot.val()).forEach(function(key) {
+            Object.keys(snapshot.val()).forEach(function (key) {
                 subscribers.push(snapshot.val()[key]);
             });
             resolve(subscribers);
@@ -66,24 +66,24 @@ async function updateSubscriptionsStatistics(users) {
         }
     }
     for (var i = 0; i < userSubs.length; i++) {
-        Object.keys(userSubs[i]).forEach(function(subscriptionKey) {
+        Object.keys(userSubs[i]).forEach(function (subscriptionKey) {
             if (userSubs[i][subscriptionKey] && Object.keys(subscriptionCount).includes(subscriptionKey)) {
                 subscriptionCount[subscriptionKey] += 1;
             }
         });
     }
-    Object.keys(subscriptionCount).forEach(function(subscriptionKey) {
+    Object.keys(subscriptionCount).forEach(function (subscriptionKey) {
         database.ref(`SubcriptionOptions/${subscriptionKey}/Subscribers`).set(subscriptionCount[subscriptionKey]);
     });
     setTimeout(loadStats, 3000);
 }
 function loadStats() {
-    database.ref("SubcriptionOptions").on("value", function(snapshot) {
+    database.ref("SubcriptionOptions").on("value", function (snapshot) {
         const statisticsContainer = document.getElementById('StatsContainer');
         while (statisticsContainer.lastChild) {
             statisticsContainer.removeChild(statisticsContainer.lastChild);
         }
-        snapshot.forEach(function(child) {
+        snapshot.forEach(function (child) {
             const stat = document.createElement('h4');
             stat.setAttribute('id', `${child.key}-stat`);
             stat.appendChild(document.createTextNode(`${child.val().Author}: ${child.val().Title} = ${child.val().Subscribers}`));
@@ -108,12 +108,12 @@ function initializeImageUploaderView() {
             $(`#FrontCover-gradient`).append(`<button id="FrontCover-removeButton" onclick="removeImageFrom('FrontCover')">Remove Image</button>`);
         }
     });
-    database.ref("SubcriptionOptions").once("value", function(snapshot) {
-        snapshot.forEach(function(child) {
+    database.ref("SubcriptionOptions").once("value", function (snapshot) {
+        snapshot.forEach(function (child) {
             let title = `${child.val().Author}: ${child.val().Title}`
             let html = getFileDropperHTML(title, child.key);
             $('#FileDroperContainer').append(html);
-            database.ref(`SubcriptionOptions/${child.key}`).once('value', function(snapshot) {
+            database.ref(`SubcriptionOptions/${child.key}`).once('value', function (snapshot) {
                 if (Object.keys(snapshot.val()).includes("DownloadURL")) {
                     $(`#${child.key}`).css('background-image', `url('${snapshot.val()["DownloadURL"]}')`);
                     $(`#${child.key}-gradient`).append(`<button id="${child.key}-removeButton" onclick="removeImageFrom('${child.key}')">Remove Image</button>`);
@@ -147,7 +147,7 @@ function getFileDropperHTML(title, key) {
 function uploadTanachLink() {
     if ($("#tanachLink").val() != "") {
         database.ref('TanachLink').set($("#tanachLink").val());
-        setTimeout(function() {
+        setTimeout(function () {
             alert('Tanach Link Has Been Updated.');
         }, 1000);
     } else {
@@ -160,28 +160,28 @@ function addRemoveImgButton(gradientID) {
 
 function removeImageFrom(imgID) {
     storage.ref(`PDFs/${imgID}`).delete()
-    .then(function() {
-        let dbPath = `SubcriptionOptions/${imgID}/DownloadURL`;
-        if (imgID == "PromoContent") {
-            dbPath = 'PromoContent';
-        }
-        database.ref(dbPath).remove().then(function() {
-            $(`#${imgID}`).css('background-image', 'none');
-        }).catch(function(error) {
+        .then(function () {
+            let dbPath = `SubcriptionOptions/${imgID}/DownloadURL`;
+            if (imgID == "PromoContent") {
+                dbPath = 'PromoContent';
+            }
+            database.ref(dbPath).remove().then(function () {
+                $(`#${imgID}`).css('background-image', 'none');
+            }).catch(function (error) {
+                if (error) {
+                    alert(error.message);
+                }
+            });
+        }).catch(function (error) {
             if (error) {
                 alert(error.message);
             }
         });
-    }).catch(function(error) {
-        if (error) {
-            alert(error.message);
-        }
-    });
 }
 
 function removeAllImages() {
     const imageContainers = document.getElementsByClassName('PrevImgContainer');
-    Array.prototype.filter.call(imageContainers, function(imgContainer) {
+    Array.prototype.filter.call(imageContainers, function (imgContainer) {
         if (imgContainer.id != "PromoContent" && $(`#${imgContainer.id}`).css('background-image') != 'none') {
             $(`#${imgContainer.id}-removeButton`).hide();
             removeImageFrom(imgContainer.id);
@@ -192,22 +192,22 @@ function uploadImageFrom(containerID) {
     const file = document.getElementById(`${containerID}-input`).files[0];
     var uploadTask = storage.ref('PDFs/').child(`${containerID}`).put(file);
 
-    uploadTask.on('state_changed', function(snapshot) {
+    uploadTask.on('state_changed', function (snapshot) {
         var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
         document.getElementById(`${containerID}-uploadButton`).style.display = 'none';
         document.getElementById(`${containerID}-progress`).innerHTML = `(${progress}% / 100% complete.)`;
-    }, function(error) {
+    }, function (error) {
         if (error) {
             document.getElementById(`${containerID}-gradient`).style.background = 'linear-gradient(rgb(255, 152, 152), rgba(255, 152, 152, 0.2))';
             document.getElementById(`${containerID}-progress`).innerHTML = "Upload Failed";
             alert(error.message);
         }
-    }, function() {
+    }, function () {
         document.getElementById(`${containerID}-gradient`).style.background = 'linear-gradient(rgb(152, 251, 152), rgba(152, 251, 152, 0.2))';
         document.getElementById(`${containerID}-progress`).innerHTML = "Uploaded Successfully";
         $(`#${containerID}-gradient`).append(`<button id="${containerID}-removeButton" onclick="removeImageFrom('${containerID}')">Remove Image</button>`);
         let dbPath = `SubcriptionOptions/${containerID}/DownloadURL`;
-        if (containerID == "PromoContent" || containerID == "FrontCover") {dbPath = containerID}
+        if (containerID == "PromoContent" || containerID == "FrontCover") { dbPath = containerID }
         database.ref(dbPath).set(uploadTask.snapshot.downloadURL);
     });
 }
@@ -239,7 +239,7 @@ function initiateAdd() {
 }
 function initiateRemove() {
     const subscriptionsPanel = document.getElementById('StatsContainer').childNodes;
-    subscriptionsPanel.forEach(function(subscription) {
+    subscriptionsPanel.forEach(function (subscription) {
         const checkbox = document.createElement('input');
         checkbox.setAttribute('type', 'checkbox');
         checkbox.setAttribute('onclick', `removeSubscription('${subscription.id.slice(0, -5)}-remove')`);
@@ -249,7 +249,7 @@ function initiateRemove() {
 async function initiateReschedule() {
     let heading = ""
     let currentTime = await database.ref('ScheduleTime').once('value');
-    let val = currentTime.val(); 
+    let val = currentTime.val();
     heading = `The blast is scheduled for ${val.Day}, at ${val.Hour}:${val.Minute}. Please enter the time you'd like to reschedule it for.`;
     let popup = `
         <div id="ReschedulePopup">
@@ -270,7 +270,7 @@ function cancelReschedule() {
 }
 function reschedule() {
     const day = $('#reschedule-day').val();
-    const hour =  $('#reschedule-hour').val();
+    const hour = $('#reschedule-hour').val();
     const minute = $('#reschedule-minute').val();
     const validDays = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
     if (!validDays.includes(day)) {
@@ -290,7 +290,7 @@ function reschedule() {
         Hour: hour,
         Minute: minute
     });
-    alert(`Email blast shedule updated to ${day}, ${hour}:${minute}`);
+    setTimeout(alert(`Email blast shedule updated to ${day}, ${hour}:${minute}`), 1000);
     document.getElementById('ReschedulePopup').style.display = 'none';
 }
 function addSubscription() {
@@ -319,7 +319,7 @@ function removeSubscription(subscriptionID) {
     const desc = document.getElementById(subscriptionID).textContent;
     if (confirm(`You are about to remove ${desc} from the subscription options permanently.\nAre you sure you want to continue?`)) {
         database.ref(`SubcriptionOptions/${subscriptionID}`).remove();
-        setTimeout(function() {
+        setTimeout(function () {
             initializeImageUploaderView();
             loadStats();
             alert("Option removal successful.");
