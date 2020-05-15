@@ -11,6 +11,8 @@ firebase.initializeApp(config);
 var database = firebase.database();
 var auth = firebase.auth();
 var user = auth.currentUser;
+const API_URL = 'https://sca-email-server.herokuapp.com'
+// const API_URL = 'http://localhost:5000';
 
 
 $(document).on('change', '#Synagogue-select', function() {
@@ -245,13 +247,13 @@ function handleNewSignUp() {
 
 // function sendPDFNow() {
 //     database.ref('Users/'+firebase.auth().currentUser.uid+"/Subscriptions").set(subscriptionData());
-//     $.post('https://sca-email-server.herokuapp.com/onDemand', {email: auth.currentUser.email}, function (data) {
+//     $.post('API_URL/onDemand', {email: auth.currentUser.email}, function (data) {
 //         alert(`We're preparing your pdf. You should recieve it at ${auth.currentUser.email} shortly.`);
 //     });
 // }
 function getMyPDF() {
     showSpinner();
-    $.post('https://sca-email-server.herokuapp.com/pdfNow', {email: auth.currentUser.email}, function(data, status) {
+    $.post(`${API_URL}/pdfNow`, {email: auth.currentUser.email}, function(data, status) {
         $('#loadingWidget').hide();
         $('#overlay').hide();
         if (status == "success") {
@@ -259,20 +261,37 @@ function getMyPDF() {
             if (data.slice(0, 13) == "We appologize") {
                 alert(data);
             } else {
-                if(window.isOnMobileOrTablet()) {
-                    $('#downloadLink').prop('href', `data:application/pdf;base64,${data}`);
-                    $('#downloadPopup').show();
-                } else {
-                    let link = document.createElement('a');
-                    link.href = `https://sca-email-server.herokuapp.com/merged`;
-                    link.download = "ShabbatShalom.pdf";
-                    link.click();
-                }
+               downloadStitchedPDF();
             }
         } else {
             alert(status);
         }
     });
+}
+function downloadAllUploadedPdfs() {
+    showSpinner();
+    $.get(`${API_URL}/all-uploaded-pdfs`, function (data, status) {
+        $('#loadingWidget').hide();
+        $('#overlay').hide();
+        if (status === "success") {
+            if (data.slice(0, 13) === "We appologize") {
+                alert(data);
+            } else {
+                downloadStitchedPDF();
+            }
+        }
+    })
+}
+function downloadStitchedPDF() {
+    if(window.isOnMobileOrTablet()) {
+        $('#downloadLink').prop('href', `data:application/pdf;base64,${data}`);
+        $('#downloadPopup').show();
+    } else {
+        let link = document.createElement('a');
+        link.href = `${API_URL}/merged`;
+        link.download = "ShabbatShalom.pdf";
+        link.click();
+    }
 }
 function closePDFPopup() {
     $('#downloadPopup').hide();
