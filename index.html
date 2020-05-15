@@ -1,54 +1,96 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="utf-8">
-        <link rel="stylesheet" href="styles.css">
-        <script src="https://www.gstatic.com/firebasejs/4.13.0/firebase.js"></script>
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-        <script src="app.js" charset="utf-8"></script>
-        <title>SCA Shabbat Shalom Email Service</title>
-    </head>
-    <body>
-        <!-- Project Developed By Isaac Benzaken -->
-        <div id="loadingWidget">
-            <h1>Loading...</h1>
-            <img src="Images/Spinner.png" alt="" id="spinner" class="rotating">
-        </div>
-        <div id="overlay"></div>
-        <div class="TextContainer">
-            <h2>SCA Shabbat Shalom Reader</h2> 
-            <h3 style="color: white">Choose your subscription preferences below to automatically receive a personalized PDF every Friday with content from your favorite Rabbis & Community Leaders.</h3>
-            <a href="/Archives/"><button class="TopButtons">Check out previous publishings!</button></a>
-        </div>
-        <div class="TextContainer" id="TopButtonsContainer">
-            <button class="TopButtons" id="TopSignupButton" onclick="showSignUpForm();">Sign Up</button>
-            <button class="TopButtons" id="TopSigninButton" onclick="showLoginForm();">Log In</button>
-            <a id="InviteFriendsButton" href="mailto:?&subject=I%20Think%20You'd%20Enjoy%20This...&body=Check out the SCA Shabbat Shalom Reader, it's awesome! https://www.scaupdates.org/Shabbatshalom"><button class="TopButtons">Invite Friends</button></a>
-        </div>
-        <div class="login-page">
-            <div class="form">
-                <div class="register-form" id="main-form">
-                    <h4 style="width: 100%; text-align: center; font-size: 28px">Subscription Preferences:</h4>
-                    <div id="subscriptionsView">
-                        <h3>SCA Affiliates:</h3>
-                        <div id="SCA-Affiliates"></div>
-                        <h3>Other Must Reads:</h3>
-                        <div id="Other"></div>
-                        <h3>Options</h3>
-                        <div id="Options">
-                            <span>Include a link to this weeks tanach study from tanachstudy.com<br><br></span>
-                            <span>Surprise me: Recieve one additional subscription chosen at random every week<br><br></span>
-                        </div>
-                    </div>
-                    <button type="button" onclick="showLoginForm()">Login</button>
-                    <button type="button" onclick="showSignUpForm()">Sign Up</button>
-                </div>
+  <head>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="styles.css" />
+    <script src="https://www.gstatic.com/firebasejs/4.13.0/firebase.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="app.js" charset="utf-8"></script>
+    <title>SCA Shabbat Shalom Email Service</title>
+  </head>
+  <body>
+    <!-- Project Developed By Isaac Benzaken -->
+    <div id="loadingWidget">
+      <h1>Loading...</h1>
+      <img src="Images/Spinner.png" alt="" id="spinner" class="rotating" />
+    </div>
+    <div id="overlay"></div>
+    <div class="TextContainer">
+      <h2>SCA Shabbat Shalom Reader</h2>
+      <h3 style="color: white;">
+        Choose your subscription preferences below to automatically receive a
+        personalized PDF every Friday with content from your favorite Rabbis &
+        Community Leaders.
+      </h3>
+      <a href="Archives/"
+        ><button class="TopButtons">Check out previous publishings!</button></a
+      >
+    </div>
+    <div class="TextContainer" id="TopButtonsContainer">
+      <button
+        class="TopButtons"
+        id="TopSignupButton"
+        onclick="showSignUpForm();"
+      >
+        Sign Up
+      </button>
+      <button
+        class="TopButtons"
+        id="TopSigninButton"
+        onclick="showLoginForm();"
+      >
+        Log In
+      </button>
+      <a
+        id="InviteFriendsButton"
+        href="mailto:?&subject=I%20Think%20You'd%20Enjoy%20This...&body=Check out the SCA Shabbat Shalom Reader, it's awesome! https://www.scaupdates.org/Shabbatshalom"
+        ><button class="TopButtons">Invite Friends</button></a
+      >
+    </div>
+    <div class="login-page">
+      <div class="form">
+        <div class="register-form" id="main-form">
+          <h4 style="width: 100%; text-align: center; font-size: 28px;">
+            Subscription Preferences:
+          </h4>
+          <div id="subscriptionsView">
+            <h3>SCA Affiliates:</h3>
+            <div id="SCA-Affiliates"></div>
+            <h3>Other Must Reads:</h3>
+            <div id="Other"></div>
+            <h3>Options</h3>
+            <div id="Options">
+              <span
+                >Include a link to this weeks tanach study from
+                tanachstudy.com<br /><br
+              /></span>
+              <span
+                >Surprise me: Recieve one additional subscription chosen at
+                random every week<br /><br
+              /></span>
             </div>
+          </div>
+          <button type="button" onclick="showLoginForm()">Login</button>
+          <button type="button" onclick="showSignUpForm()">Sign Up</button>
         </div>
-        <div id="downloadPopup">
-            <img id="closePDFButton" src="Images/CloseButton.png" alt="" onclick="closePDFPopup();">
-            <a id="downloadLink" target="_blank" href="https://sca-email-server.herokuapp.com/merged" download onclick="return false;"><img id="pdfIcon" src="Images/PDFIcon.png" alt=""><h3>(Click to open)</h3></a>
-        </div>
-        
-    </body>
+      </div>
+    </div>
+    <div id="downloadPopup">
+      <img
+        id="closePDFButton"
+        src="Images/CloseButton.png"
+        alt=""
+        onclick="closePDFPopup();"
+      />
+      <a
+        id="downloadLink"
+        target="_blank"
+        href="https://sca-email-server.herokuapp.com/merged"
+        download
+        onclick="return false;"
+        ><img id="pdfIcon" src="Images/PDFIcon.png" alt="" />
+        <h3>(Click to open)</h3></a
+      >
+    </div>
+  </body>
 </html>
