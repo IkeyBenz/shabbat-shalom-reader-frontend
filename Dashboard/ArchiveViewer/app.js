@@ -99,11 +99,7 @@ const Archives = (function() {
     }
     const fileFromUrl = (url) => new Promise((res, rej) => {
         JSZipUtils.getBinaryContent(url, (err, data) => {
-            if (err) {
-                rej(err);
-            } else {
-                res(data);
-            }
+            err ? rej(err) : res(data);
         });
     });
 
@@ -164,8 +160,10 @@ const Archives = (function() {
 })();
 
 function updateProgressBar(percent) {
-    $('.progress-bar').css('width', `${percent}%`);
-    $('.progress-bar').text(`%${percent.toFixed(2)}`);
+    $('.progress-bar')
+        .attr('aria-valuenow', percent)
+        .css('width', `${percent}%`)
+        .text(`${percent.toFixed(2)}%`);
 }
 
 function downloadAll() {
