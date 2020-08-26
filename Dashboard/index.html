@@ -1,34 +1,62 @@
 <!DOCTYPE html>
-<html lang="en" dir="ltr" style="--StatsWidth: 0px;">
-    <head>
-        <meta charset="utf-8">
-        <title>SCA Emails Dashboard</title>
-        <link rel="stylesheet" href="styles.css">
-        <script src="https://www.gstatic.com/firebasejs/4.11.0/firebase.js"></script>
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    </head>
-    <body>
-        <div class="Stats" id="StatsBar">
-            <h1>Statistics</h1>
-            <div class="TextContainer" id="StatsContainer">
-
-            </div>
-            <div class="TextContainer SpaceBottom" id="Controls">
-                <h1>Controls</h1>
-                <button class="AddRemoveButtons" type="button" name="button" onclick="initiateReschedule();">Reschedule</button>
-                <button class="AddRemoveButtons" type="button" name="button" onclick="initiateAdd();">Add</button>
-                <button class="AddRemoveButtons" type="button" name="button" onclick="initiateRemove();">Remove</button>
-                <button class="AddRemoveButtons" onclick="removeAllImages();">Remove All Images</button>
-            </div>
-        </div>
-        <div class="Header">
-            <a href="#" onclick="toggleStatsBar();"><img class="icon left" src="../Images/SidebarIcon.png"></a>
-            <img class="logo" src="../Images/SCALogo.jpg" alt="">
-            <a href="#"><img id="profileIcon" class="icon right" src="../Images/ProfileIcon.png" alt=""></a>
-        </div>
-        <div id="FileDroperContainer">
-    
-        </div>
-        <script src="app.js" charset="utf-8"></script>
-    </body>
+<html lang="en" dir="ltr" style="--StatsWidth: 0px">
+  <head>
+    <meta charset="utf-8" />
+    <title>SCA Emails Dashboard</title>
+    <link rel="stylesheet" href="styles.css" />
+    <script src="https://www.gstatic.com/firebasejs/4.11.0/firebase.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  </head>
+  <body>
+    <div class="Stats" id="StatsBar">
+      <h1>Statistics</h1>
+      <div class="TextContainer" id="StatsContainer"></div>
+      <div class="TextContainer SpaceBottom" id="Controls">
+        <h1>Controls</h1>
+        <button
+          class="AddRemoveButtons"
+          type="button"
+          name="button"
+          onclick="initiateReschedule();"
+        >
+          Reschedule
+        </button>
+        <button
+          class="AddRemoveButtons"
+          type="button"
+          name="button"
+          onclick="initiateAdd();"
+        >
+          Add
+        </button>
+        <button
+          class="AddRemoveButtons"
+          type="button"
+          name="button"
+          onclick="initiateRemove();"
+        >
+          Remove
+        </button>
+        <button class="AddRemoveButtons" onclick="removeAllImages();">
+          Remove All PDFs
+        </button>
+        <a href="/Dashboard/ArchiveViewer/"><button>Manage Archives</button></a>
+      </div>
+    </div>
+    <div class="Header">
+      <a href="#" onclick="toggleStatsBar();"
+        ><img class="icon left" src="../Images/SidebarIcon.png"
+      /></a>
+      <img class="logo" src="../Images/SCALogo.jpg" alt="" />
+      <a href="#"
+        ><img
+          id="profileIcon"
+          class="icon right"
+          src="../Images/ProfileIcon.png"
+          alt=""
+      /></a>
+    </div>
+    <div id="FileDroperContainer"></div>
+    <script src="app.js" charset="utf-8"></script>
+  </body>
 </html>

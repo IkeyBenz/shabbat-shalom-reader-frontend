@@ -9,10 +9,9 @@ var config = {
 firebase.initializeApp(config);
 var database = firebase.database();
 
-$(document).ready(function() {
+$(document).ready(function () {
     Archives.displayByMonth();
     $('#sortPreference').on('change', function() {
-        console.log('Changed!');
         if (this.value == 'Rabbi') {
             Archives.displayByRabbi();
         } else {
@@ -98,6 +97,15 @@ const Archives = (function() {
         }
         $('main').html(html);
     }
+    const fileFromUrl = (url) => new Promise((res, rej) => {
+        JSZipUtils.getBinaryContent(url, (err, data) => {
+            if (err) {
+                rej(err);
+            } else {
+                res(data);
+            }
+        });
+    });
 
     function parseArchiveTitle(title) {
         const reversed = title.split('').reverse().join('');
@@ -127,6 +135,44 @@ const Archives = (function() {
         displayByRabbi: async function() {
             const a = await load();
             showHTMLByRabbi(a);
+        },
+        downloadAll: async function () {
+            const archives = await load();
+            const byMonth = organizeByMonth(archives);
+            const zip = new JSZip();
+
+            Object.entries(byMonth).forEach(([month, parashas]) => {
+                Object.entries(parashas).forEach(([parasha, rabbis]) => {
+                    Object.entries(rabbis).forEach(([rabbiName, fileUrl]) => {
+                        zip.file(
+                            `ssreader-archives/${month}/${parasha}/${rabbiName}.pdf`,
+                            fileFromUrl(fileUrl),
+                            { binary: true }
+                        );
+                    });
+                })
+            });
+            
+            return zip.generateAsync(
+                { type: 'blob' },
+                (metadata) => updateProgressBar(metadata.percent),
+            ).then((blob) => {
+                saveAs(blob, 'archives-by-rabbi.zip');
+            });
         }
     }
 })();
+
+function updateProgressBar(percent) {
+    $('.progress-bar').css('width', `${percent}%`);
+    $('.progress-bar').text(`%${percent.toFixed(2)}`);
+}
+
+function downloadAll() {
+    $('#download-btn').toggleClass('d-none');
+    $('.progress').toggleClass('d-none');
+    Archives.downloadAll().finally(() => {
+        $('#download-btn').toggleClass('d-none');
+        $('.progress').toggleClass('d-none');
+    });
+}
