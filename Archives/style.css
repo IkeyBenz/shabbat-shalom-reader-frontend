@@ -1,46 +1,43 @@
 body {
-    margin: 0;
-    background-color: #0B4877;
-    font-family: Arial, Helvetica, sans-serif;
+  margin: 0;
+  background-color: #0b4877 !important;
+  font-family: Arial, Helvetica, sans-serif;
 }
 header {
-    margin-top: 10px;
-    width: 100vw;
-    text-align: center;
+  margin-top: 10px;
+  width: 100vw;
+  text-align: center;
 }
 main {
-    margin: 10px;
-    background-color: #DFDFDF;
-    width: calc(100% - 60px);
-    padding: 10px 20px 20px 20px;
+  margin: 10px;
+  padding: 10px 20px 20px 20px;
 }
 .archiveContainer {
-    margin-left: 20px;
-    padding: 5px 0px;
-    width: calc(100% - 40px);
-    border-bottom: solid 1px #AAA;
-    border-top: solid 1px #AAA;
+  margin-left: 20px;
+  padding: 5px 0px;
+  width: calc(100% - 40px);
+  border-bottom: solid 1px #aaa;
+  border-top: solid 1px #aaa;
 }
 .archiveSlider {
-    width: 100%;
-    display: flex;
-    flex-flow: row;
-    overflow-x: scroll;
+  width: 100%;
+  display: flex;
+  flex-flow: row;
+  overflow-x: scroll;
 }
 .previewContainer {
-    margin: 20px;
-    text-align: center;
+  margin: 20px;
+  text-align: center;
 }
 .previewContainer img {
-    width: 170px;
-    height: auto;
-    background-color: white;
+  width: 170px;
+  height: auto;
+  background-color: white;
 }
 a {
-    color: black;
+  color: #0b4877 !important;
 }
 label {
-    margin: 10px;
-    color: white;
+  margin: 10px;
+  color: white;
 }
-
