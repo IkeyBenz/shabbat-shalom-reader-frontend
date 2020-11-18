@@ -2,11 +2,15 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <link rel="stylesheet" href="styles.css" />
+    
     <script src="https://www.gstatic.com/firebasejs/4.13.0/firebase.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+      integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
     <script src="app.js" charset="utf-8"></script>
-    <title>SCA Shabbat Shalom Email Service</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css"
+      integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+      <link rel="stylesheet" href="styles.css" />
+    <title>SCA Shabbat Shalom Reader</title>
   </head>
   <body>
     <!-- Project Developed By Isaac Benzaken -->
@@ -15,12 +19,14 @@
       <img src="Images/Spinner.png" alt="" id="spinner" class="rotating" />
     </div>
     <div id="overlay"></div>
+    <header class="py-3 d-flex justify-content-center">
+      <img src="Images/SCALogo.jpg" style="height: 100px" alt="">
+    </header>
     <div class="TextContainer">
       <h2>SCA Shabbat Shalom Reader</h2>
       <h3 style="color: white;">
-        Choose your subscription preferences below to automatically receive a
-        personalized PDF every Friday with content from your favorite Rabbis &
-        Community Leaders.
+        Choose your subscription preferences below to automatically receive a personalized PDF every week with content from your
+        favorite Rabbis & Fellow Community Members
       </h3>
       <a href="Archives/"
         ><button class="TopButtons">Check out previous publishings!</button></a
