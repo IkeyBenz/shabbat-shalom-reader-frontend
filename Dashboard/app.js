@@ -91,7 +91,7 @@ function loadStats() {
         })
     })
 }
-function initializeImageUploaderView() {
+async function initializeImageUploaderView() {
     let promoHtml = getFileDropperHTML('Promotional Content', 'PromoContent');
     $('#FileDroperContainer').html(promoHtml);
     database.ref('PromoContent').once('value', promoContent => {
@@ -108,31 +108,51 @@ function initializeImageUploaderView() {
             $(`#FrontCover-gradient`).append(`<button id="FrontCover-removeButton" onclick="removeImageFrom('FrontCover')">Remove Image</button>`);
         }
     });
-    database.ref("SubcriptionOptions").once("value", function (snapshot) {
-        snapshot.forEach(function (child) {
-            let title = `${child.val().Author}: ${child.val().Title}`
-            let html = getFileDropperHTML(title, child.key);
-            $('#FileDroperContainer').append(html);
-            database.ref(`SubcriptionOptions/${child.key}`).once('value', function (snapshot) {
-                if (Object.keys(snapshot.val()).includes("DownloadURL")) {
-                    $(`#${child.key}`).css('background-image', `url('${snapshot.val()["DownloadURL"]}')`);
-                    $(`#${child.key}-gradient`).append(`<button id="${child.key}-removeButton" onclick="removeImageFrom('${child.key}')">Remove Image</button>`);
-                }
-            });
-        });
-        database.ref('TanachLink').once('value', snapshot => {
-            var placeholder = "Tanach Weekly Study Link";
-            if (snapshot) {
-                placeholder = snapshot.val();
+    const subscriptions = await database.ref("SubcriptionOptions").once("value").then(s => s.val())
+    const sortedSubs = sortSubscriptionsByLastName(subscriptions);
+    Object.entries(sortedSubs).forEach(([key, child]) => {
+        let title = `${child.Author}: ${child.Title}`
+        let html = getFileDropperHTML(title, key);
+        $('#FileDroperContainer').append(html);
+        database.ref(`SubcriptionOptions/${key}`).once('value', function (snapshot) {
+            if (Object.keys(snapshot.val()).includes("DownloadURL")) {
+                $(`#${key}`).css('background-image', `url('${snapshot.val()["DownloadURL"]}')`);
+                $(`#${key}-gradient`).append(`<button id="${key}-removeButton" onclick="removeImageFrom('${key}')">Remove Image</button>`);
             }
-            $('#FileDroperContainer').append(
-                `<div id="tanachLinkInputContainer">
-                    <input type="text" placeholder="${placeholder}" id="tanachLink">
-                    <button onclick="uploadTanachLink()">Upload</button>
-                </div>`
-            );
         });
     });
+    database.ref('TanachLink').once('value', snapshot => {
+        var placeholder = "Tanach Weekly Study Link";
+        if (snapshot) {
+            placeholder = snapshot.val();
+        }
+        $('#FileDroperContainer').append(
+            `<div id="tanachLinkInputContainer">
+                <input type="text" placeholder="${placeholder}" id="tanachLink">
+                <button onclick="uploadTanachLink()">Upload</button>
+            </div>`
+        );
+    });
+}
+
+function sortSubscriptionsByLastName(subscriptions) {
+    function getLastName(name) {
+        const parts = name.split(' ');
+        if (parts[parts.length - 1] !== 'A"H') {
+            return parts[parts.length - 1];
+        } else {
+            return parts[parts.length - 2];
+        }
+    }
+    return Object.fromEntries(
+        Object.entries(subscriptions).sort(
+            ([key1, val1], [key2, val2]) => {
+                const lastName1 = getLastName(val1.Author);
+                const lastName2 = getLastName(val2.Author);
+                return lastName1 > lastName2;
+            }
+        )
+    )
 }
 function getFileDropperHTML(title, key) {
     return `<div class="PrevImgContainer" id="${key}">
