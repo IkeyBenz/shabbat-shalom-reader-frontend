@@ -119,6 +119,8 @@ span {
 }
 #subscriptionsView {
   margin-bottom: 20px;
+  width: 95%;
+  max-width: 600px;
 }
 body {
   /*darker blue: #124876
