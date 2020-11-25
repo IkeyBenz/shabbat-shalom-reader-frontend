@@ -15,6 +15,12 @@ const API_URL = 'https://sca-email-server.herokuapp.com'
 // const API_URL = 'http://localhost:5000';
 
 
+// $('#Synagogue-select').on('change', () => {
+//      if ($('#option-other').is(':selected')) {
+//         $('#other-input-place').html('<input type="text" placeholder="Other Synagogue" id="otherSynagogueInput">');
+//     }
+// })
+
 $(document).on('change', '#Synagogue-select', function() {
     if ($('#option-other').is(':selected')) {
         $('#other-input-place').html('<input type="text" placeholder="Other Synagogue" id="otherSynagogueInput">');
@@ -39,11 +45,6 @@ function showSubscriptionOptions() {
             <div id="SCA-Affiliates"></div>
             <h3>Other Must Reads:</h3>
             <div id="Other"></div>
-            <h3>Options</h3>
-            <div id="Options">
-                <span>Include a link to this week's TanachStudy.com recordings<br><br></span>
-                <span>Surprise me: Recieve one additional subscription chosen at random every week<br><br></span>
-            </div>
         </div>
         <button type="button" onclick="showLoginForm()">Login</button>
         <button type="button" onclick="showSignUpForm()">Sign Up</button>
@@ -365,6 +366,8 @@ auth.onAuthStateChanged(function(user) {
     if (user) {
         if (user.emailVerified) {
             showUsersSubscriptionOptions();
+            $('.AuthenticatedButtons').show();
+            $('.UnauthenticatedButtons').hide();
         } else {
             scrollToTop();
             $('#main-form').html(`
@@ -377,6 +380,8 @@ auth.onAuthStateChanged(function(user) {
             }, 1000);
         }
     } else {
+        $('.AuthenticatedButtons').hide();
+        $('.UnauthenticatedButtons').show();
         showSubscriptionOptions();
     }
 })

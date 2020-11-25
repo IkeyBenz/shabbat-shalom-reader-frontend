@@ -29,18 +29,20 @@
         Choose your subscription preferences below to automatically receive a personalized PDF every week with content from your
         favorite Rabbis & Fellow Community Members
       </h3>
-      <a href="Archives/"
-        ><button class="TopButtons">Check out previous publishings!</button></a
-      >
-      <button
-        class="TopButtons"
-        style="background: white; color: #1665aa;"
-        onclick="downloadAllUploadedPdfs()"
-      >
-        Download current uploads
-      </button>
+      <div class="AuthenticatedButtons">
+        <a href="Archives/"
+          ><button class="TopButtons">Check out previous publishings!</button></a
+        >
+        <button
+          class="TopButtons"
+          style="background: white; color: #1665aa;"
+          onclick="downloadAllUploadedPdfs()"
+        >
+          Download current uploads
+        </button>
+      </div>
     </div>
-    <div class="TextContainer" id="TopButtonsContainer">
+    <div class="TextContainer UnauthenticatedButtons" id="TopButtonsContainer">
       <button
         class="TopButtons"
         id="TopSignupButton"
@@ -64,29 +66,7 @@
     <div class="login-page">
       <div class="form">
         <div class="register-form" id="main-form">
-          <h4 style="width: 100%; text-align: center; font-size: 28px;">
-            Subscription Preferences:
-          </h4>
-          <div id="subscriptionsView">
-            <h3>SCA Affiliates:</h3>
-            <div id="SCA-Affiliates"></div>
-            <h3>Other Must Reads:</h3>
-            <div id="Other"></div>
-            <h3>Options</h3>
-            <div id="Options">
-              <span
-                >Include a link to this weeks tanach study from
-                tanachstudy.com<br /><br
-              /></span>
-              <span
-                >Surprise me: Recieve one additional subscription chosen at
-                random every week<br /><br
-              /></span>
-            </div>
-          </div>
-          <button type="button" onclick="showLoginForm()">Login</button>
-          <button type="button" onclick="showSignUpForm()">Sign Up</button>
-        </div>
+         
       </div>
     </div>
     <div id="downloadPopup">
