@@ -14,6 +14,7 @@ var user = auth.currentUser;
 const API_URL = 'https://sca-email-server.herokuapp.com'
 // const API_URL = 'http://localhost:5000';
 
+const isSubscribedRef = (userId) => `Users/${userId}/isSubscribed`;
 
 // $('#Synagogue-select').on('change', () => {
 //      if ($('#option-other').is(':selected')) {
@@ -171,13 +172,46 @@ function showUsersSubscriptionOptions() {
         If you choose to 'send content now', your pdf will contain content from green authors above.</p>
         <button onclick="getMyPDF()">Download Content Now</button>
         <p class="message">Not ${firebase.auth().currentUser.displayName}? <a onclick="logUserOut()">Log Out</a></p>
-        <p class="message">Want to update your email address? <a onclick="showEmailResetField();">Click Here<a/>`);
+        <p class="message">Want to update your email address? <a onclick="showEmailResetField();">Click Here<a/>
+        <div id="subscription-state-toggle"></div>
+        `);
         
         loadUsersSubscriptions();
+        populateUnsubscribeButton();
     } else {
         console.log('user is null?')
     }
 }
+
+function populateUnsubscribeButton() {
+    const currentUser = firebase.auth().currentUser;
+    if (!currentUser) return;
+
+    database.ref(isSubscribedRef(currentUser.uid)).on('value', (snapshot) => {
+        const isSubscribed = snapshot.val() || true;
+        const subscriptionStateToggle = $('#subscription-state-toggle');
+        if (isSubscribed) {
+            subscriptionStateToggle.html(`<p>No longer want to receive emails from us? <a onClick="unsubscribe()">Unsubscribe</a></p>`);
+        } else {
+            subscriptionStateToggle.html(`<p>You're not subscribed to these emails - <a onClick="resubscribe()">Resubscribe</a></p>`)
+        }
+    });
+}
+
+function unsubscribe() {
+    const currentUser = firebase.auth().currentUser;
+    if (!currentUser) return;
+
+    database.ref(isSubscribedRef(currentUser.uid)).set(false);
+}
+
+function resubscribe() {
+    const currentUser = firebase.auth().currentUser;
+    if (!currentUser) return;
+
+    database.ref(isSubscribedRef(currentUser.uid)).set(true);
+}
+
 function showEmailResetField() {
     $('#main-form').html(`
     <h3 style="width:100%; text-align: center">Change your email address from ${firebase.auth().currentUser.email}, to:</h3>
@@ -190,7 +224,7 @@ function confirmEmailReset() {
         let oldEmail = firebase.auth().currentUser.email;
         firebase.auth().currentUser.updateEmail($('#newEmailForUser').val()).then(function() {
             database.ref('Users/'+firebase.auth().currentUser.uid).update({"Email": $('#newEmailForUser').val()});
-            alert(`Your email was succesfully changed from ${oldEmail} to ${$('#newEmailForUser').val()}`);
+            alert(`Your email was successfully changed from ${oldEmail} to ${$('#newEmailForUser').val()}`);
             $('#main-form').html(`
                 <h3>We've updated your email.</h3>
                 <h4>Please verify your new email address to continue.</h4>
