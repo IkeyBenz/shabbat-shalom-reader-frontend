@@ -188,12 +188,12 @@ function populateUnsubscribeButton() {
     if (!currentUser) return;
 
     database.ref(isSubscribedRef(currentUser.uid)).on('value', (snapshot) => {
-        const isSubscribed = snapshot.val() || true;
+        const isSubscribed = snapshot.val() ?? true;
         const subscriptionStateToggle = $('#subscription-state-toggle');
         if (isSubscribed) {
-            subscriptionStateToggle.html(`<p>No longer want to receive emails from us? <a onClick="unsubscribe()">Unsubscribe</a></p>`);
+            subscriptionStateToggle.html(`<p class="message">No longer want to receive emails from us? <a onClick="unsubscribe()">Unsubscribe</a></p>`);
         } else {
-            subscriptionStateToggle.html(`<p>You're not subscribed to these emails - <a onClick="resubscribe()">Resubscribe</a></p>`)
+            subscriptionStateToggle.html(`<p class="message">You're not subscribed to these emails - <a onClick="resubscribe()">Resubscribe</a></p>`)
         }
     });
 }
